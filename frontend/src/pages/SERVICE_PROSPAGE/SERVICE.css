@@ -1,0 +1,255 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body form {
+  width: 90vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+h3 {
+  padding: 30px 0;
+}
+
+h4 {
+  padding-bottom: 20px;
+}
+
+.hr {
+  border: 1px solid black;
+  width: 350px;
+  margin: 10px 0;
+}
+
+/*-------- user-log-in-container--------*/
+
+.user-log-in-container {
+  width: 350px;
+}
+
+.user-log-in-container input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+/* --------services-container-------- */
+
+.services-container {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 100px;
+  margin: 30px 0;
+}
+
+.service-headers-container {
+  margin-bottom: 30px;
+}
+
+.speciality {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.speciality div {
+  background-color: #a09e9e;
+  padding: 10px 10px;
+  border-radius: 0.5rem;
+}
+
+.speciality i {
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+}
+
+.speciality i:hover {
+  background-color: #a09e9e;
+}
+
+.service-specialities-display-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+/*------review------ */
+
+.review-container-1 {
+  width: 350px;
+  height: 350px;
+  background-color: #cac8c8;
+  border-radius: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  margin-left: 200px;
+  margin-bottom: 30px;
+}
+
+/*-------work container-------- */
+
+.works-headers-container {
+  margin-bottom: 30px;
+  margin-left: -100px;
+}
+
+.works-container input {
+  padding-bottom: 10px;
+}
+
+.works-container-form {
+  width: 400px;
+  margin-bottom: 30px;
+  margin-left: -100px;
+}
+
+.works-display-container div:nth-child(even) {
+  margin-left: -10px;
+}
+
+.work-uploaded {
+  width: 350px;
+  height: 350px;
+  background-color: #cac8c8;
+  border-radius: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  margin-left: 200px;
+  margin-bottom: 30px;
+}
+
+/*-------price-------- */
+
+.prices-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.prices-headers-container {
+  margin-bottom: 30px;
+}
+
+.prices-container-form input {
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.prices-container-form select {
+  padding: 10px;
+}
+
+/* -----review-container-2----- */
+
+.review-container-2 {
+  width: 350px;
+  height: 350px;
+  background-color: #cac8c8;
+  border-radius: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  margin-left: 200px;
+  margin-bottom: 30px;
+}
+
+/* -------About-user-container------ */
+
+.About-user-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+
+.About-user-container textarea {
+  border-radius: 0.5rem;
+  resize: none;
+  padding: 10px;
+}
+
+.about-container-form input {
+  width: 350px;
+  padding: 10px 0;
+  margin: 10px 0;
+}
+
+.about-container-form i {
+  padding: 10px;
+  margin-left: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.about-container-form i:hover {
+  background-color: #a09e9e;
+}
+
+.about-container-form {
+  margin-bottom: 30px;
+}
+
+/* -----review-container-3------- */
+
+.review-container-3 {
+  width: 350px;
+  height: 350px;
+  background-color: #cac8c8;
+  border-radius: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  margin-left: 200px;
+  margin-bottom: 30px;
+}
+
+/* ------------ */
+
+button {
+  padding: 10px 30px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  background-color: #2c2c2c;
+  border-color: #2c2c2c;
+  color: white;
+  margin: 30px;
+}
+
+a {
+  cursor: pointer;
+}
+
+.term-condition-paragraph {
+  padding-top: 30px;
+  text-align: center;
+}
+
+.status {
+  padding: 30px;
+}

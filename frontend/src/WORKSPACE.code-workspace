@@ -1,0 +1,15 @@
+{
+  "folders": [
+    {
+      "name": "REACT",
+      "path": "../../../../../../NEW ONE/REACT"
+    },
+    {
+      "name": "FIXIT",
+      "path": "../.."
+    }
+  ],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "FreeCode"
+  }
+}
