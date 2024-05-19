@@ -4,6 +4,7 @@ from Professionals.models import Professional
 from django.contrib.auth.models import User
 from .models import Domain
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404
 import json
 
 
@@ -158,5 +159,10 @@ def professional_view(request, pk=None, *args, **kwargs):
             except Exception as e:
                 return JsonResponse({"error": str(e)}, status=500)
 
+    if request.method == "DELETE":
+        obj = get_object_or_404(Professional, id = pk)
+        obj.delete()
+
+        return JsonResponse({"message": "professional resource deleted successfully"}, status = 200)
 
     return JsonResponse({"error": "Unsupported request method"}, status=405)

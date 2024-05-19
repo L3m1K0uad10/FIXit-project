@@ -6,4 +6,5 @@ urlpatterns = [
     path('<int:pk>/', professional_view, name = "professional_detail"),
     path('create/', professional_view, name = "professional_create"),
     path('update/<int:pk>/', professional_view, name = "professional_update"),
+    path('delete/<int:pk>/', professional_view, name = "professional_delete"),
 ]
