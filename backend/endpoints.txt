@@ -1,0 +1,85 @@
+1. Users App: Manage user-related functionalities.
+
+    Models: User
+    API Endpoints:
+        POST /users/register/: Register a new user.
+        POST /users/login/: Authenticate a user.
+        GET /users/<int:user_id>/: Get user details.
+        PUT /users/<int:user_id>/: Update user details.
+        DELETE /users/<int:user_id>/: Delete a user.
+
+
+2. Professionals App: Handle professional-specific functionalities.                      (NUMBER 1) *; *; *; *;
+
+    Models: Professional, Profile, ExperienceBackground, Video, Image
+    API Endpoints:
+        GET /professionals/: List all professionals.
+        GET /professionals/<int:professional_id>/: Get professional details.
+        POST /professionals/: Register a new professional.
+        PUT /professionals/<int:professional_id>/: Update professional details.
+        DELETE /professionals/<int:professional_id>/: Delete a professional.
+
+
+3. ServiceRequests App: Manage service requests.
+
+    Models: ServiceRequest, Category, Urgency
+    API Endpoints:
+        POST /servicerequests/: Create a new service request.
+        GET /servicerequests/<int:request_id>/: Get service request details.
+        PUT /servicerequests/<int:request_id>/: Update a service request.
+        DELETE /servicerequests/<int:request_id>/: Delete a service request.
+
+
+4. Appointments App: Manage appointments between users and professionals.
+
+    Models: Appointment
+    API Endpoints:
+        POST /appointments/: Create a new appointment.
+        GET /appointments/<int:appointment_id>/: Get appointment details.
+        PUT /appointments/<int:appointment_id>/: Update an appointment.
+        DELETE /appointments/<int:appointment_id>/: Cancel an appointment.
+
+
+5. Messages App: Handle messaging between users and professionals.
+
+    Models: Message
+    API Endpoints:
+        POST /messages/: Send a new message.
+        GET /messages/<int:message_id>/: Get message details.
+        GET /messages/inbox/: List received messages.
+        GET /messages/sent/: List sent messages.
+
+
+6. Reviews App: Manage reviews of professionals by users.
+
+    Models: Review
+    API Endpoints:
+        POST /reviews/: Create a new review.
+        GET /reviews/<int:review_id>/: Get review details.
+        PUT /reviews/<int:review_id>/: Update a review.
+        DELETE /reviews/<int:review_id>/: Delete a review.
+
+
+7. Transactions App: Handle transactions between users and professionals.
+
+    Models: Transaction
+    API Endpoints:
+        POST /transactions/: Create a new transaction.
+        GET /transactions/<int:transaction_id>/: Get transaction details.
+        GET /transactions/user/<int:user_id>/: List transactions for a user.
+        GET /transactions/professional/<int:professional_id>/: List transactions for a professional.
+
+
+8. Services App: Manage the different services offered within each domain.
+
+    Models: Service, Domain
+    API Endpoints:
+        POST /services/: Create a new service.
+        GET /services/<int:service_id>/: Get service details.
+        PUT /services/<int:service_id>/: Update a service.
+        DELETE /services/<int:service_id>/: Delete a service.
+        GET /domains/: List all domains.
+        POST /domains/: Create a new domain.
+        GET /domains/<int:domain_id>/: Get domain details.
+        PUT /domains/<int:domain_id>/: Update a domain.
+        DELETE /domains/<int:domain_id>/: Delete a domain
