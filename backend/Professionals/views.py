@@ -1,11 +1,13 @@
+import json
+
 from django.shortcuts import render
 from django.http import JsonResponse
 from Professionals.models import Professional 
 from django.contrib.auth.models import User
-from .models import Domain
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
-import json
+
+from Domains.models import Domain
 
 
 @csrf_exempt

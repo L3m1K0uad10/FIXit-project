@@ -16,22 +16,28 @@
 
 .decor-1 {
   width: 300px;
-  height: 300px;
-  border-radius: 50%;
+  height: 100vh;
+  /* height: 300px; */
+  /* border-radius: 50%; */
   background-color: var(--honolulu-blue);
+  border-top: 100vh solid var(--honolulu-blue);
+  border-right: 130px solid white;
   position: absolute;
   left: -100px;
-  top: -100px;
-}
+/*   top: -100px;
+ */}
 
 .decor-2 {
   width: 300px;
-  height: 300px;
-  border-radius: 50%;
+  height: 100vh;
+  /* height: 300px;
+  border-radius: 50%; */
   background-color: var(--yale-blue);
+  border-top: 100vh solid var(--yale-blue);
+  border-left: 130px solid white;
   position: absolute;
   right: -100px;
-  bottom: -100px;
+  /* bottom: -100px; */
 }
 
 .auth-core-container {

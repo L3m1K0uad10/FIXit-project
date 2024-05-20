@@ -1,13 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User  # Assuming we are using Django's built-in User model
+from Domains.models import Domain
 
 
 # Create your models here.
-class Domain(models.Model):
-    domain_name = models.CharField(max_length = 100, unique = True)
-
-    def __str__(self):
-        return self.domain_name
 
 class ExperienceBackground(models.Model):
     worked_at = models.CharField(max_length = 100)
