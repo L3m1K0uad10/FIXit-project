@@ -12,4 +12,6 @@ urlpatterns = [
     path("services/create/", service_view, name = "service_create"),
     path("services/", service_view, name = "service_list"),
     path("services/<int:pk>/", service_view, name = "service_detail"),
+    path("services/update/<int:pk>/", service_view, name = "service_update"),
+    path("services/delete/<int:pk>/", service_view, name = "service_delete"),
 ]
