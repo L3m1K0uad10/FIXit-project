@@ -37,6 +37,24 @@ def domain_view(request, pk = None, *args, **kwargs):
             return JsonResponse({"error": str(e)}, status=500)
 
     if request.method == "GET":
-        pass
+        if pk is not None:
+            try:
+                domain = Domain.objects.get(id = pk) 
+                data = {
+                    "id": domain.id,
+                    "domain_name": domain.domain_name,
+                }
+                return JsonResponse(data, safe = False)
+            except:
+                return JsonResponse({"error": "Domain not found"}, status=404) 
+
+        domains = Domain.objects.all()
+        data = []
+        for domain in domains:
+            data.append({
+                "id": domain.id,
+                "domain_name": domain.domain_name,
+            })
+        return JsonResponse(data, safe = False)
 
     return JsonResponse({"error": "Method not allowed"}, status=405)
