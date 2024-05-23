@@ -1,6 +1,6 @@
 import json
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from .models import ServiceRequest
 from django.contrib.auth.models import User
@@ -17,7 +17,6 @@ def service_request_view(request, pk = None, *args, **kwargs):
     if request.method == "POST":
         try:
             data = json.loads(request.body.decode("utf-8"))
-            print(data)
 
             user_id = data.get("user")
             professional_id = data.get("professional")
@@ -29,10 +28,10 @@ def service_request_view(request, pk = None, *args, **kwargs):
             budget = data.get("budget")
 
             if urgency is None:
-                urgency = 'LOW'
+                urgency = 'Low'
                 
             if status is None:
-                status = 'PENDING'
+                status = 'Pending'
 
             if user_id is None or professional_id is None or category_id is None or service_id is None or budget is None:
                 return JsonResponse({"error": "user, professional, category, service and budget fields are required"}, status=400)
@@ -53,9 +52,6 @@ def service_request_view(request, pk = None, *args, **kwargs):
                 budget = budget
             )   
             service_request.save()
-
-            print(service_request.professional.user.username)
-            print(service_request.category.domain_name)
 
             data = {
                 "id": service_request.id,
@@ -82,12 +78,76 @@ def service_request_view(request, pk = None, *args, **kwargs):
             return JsonResponse({"error": str(e)}, status=500) 
 
     if request.method == "GET":
-        pass 
+        if pk is not None:
+            try:
+                service_request = ServiceRequest.objects.get(id = pk)
 
+                data = {
+                    "id": service_request.id,
+                    "professional": service_request.professional.user.username,
+                    "category": service_request.category.domain_name,
+                    "service": service_request.service.service_name,
+                    "description": service_request.description,
+                    "urgency": service_request.urgency,
+                    "status": service_request.status,
+                    "budget": service_request.budget,
+                }
+                return JsonResponse(data, safe=False)
+            except ServiceRequest.DoesNotExist:
+                return JsonResponse({"error": "Service request not found"}, status=404)
+        
+        service_requests = ServiceRequest.objects.all()
+        data = []
+        for service_request in service_requests:
+            data.append({
+                "id": service_request.id,
+                "professional": service_request.professional.user.username,
+                "category": service_request.category.domain_name,
+                "service": service_request.service.service_name,
+                "description": service_request.description,
+                "urgency": service_request.urgency,
+                "status": service_request.status,
+                "budget": service_request.budget,
+            })
+        return JsonResponse(data, safe=False)
+    
     if request.method == "PUT":
-        pass 
+        #only urgency and status can be updated(urgency by the user and status for data display)
+        #why not other fields because there is message possibility between user-professional
+        if pk is not None:
+            try: 
+                data =  json.loads(request.body.decode("utf-8"))
+                service_request = ServiceRequest.objects.get(id = pk)
 
-    if request.method == "DELETE":
-        pass 
+                urgency = data.get("urgency")
+                status = data.get("status")
+
+                if urgency is not None:
+                    service_request.urgency = urgency
+                if status is not None:
+                    service_request.status = status 
+                
+                service_request.save()
+
+                data = {
+                    "id": service_request.id,
+                    "professional": service_request.professional.user.username,
+                    "category": service_request.category.domain_name,
+                    "service": service_request.service.service_name,
+                    "description": service_request.description,
+                    "urgency": service_request.urgency,
+                    "status": service_request.status,
+                    "budget": service_request.budget,
+                }
+                return JsonResponse(data, safe=False, status=200)
+            except ServiceRequest.DoesNotExist:
+                return JsonResponse({"error": "Service request not found"}, status=404)
+            except Exception as e:
+                return JsonResponse({"error": str(e)}, status=500)
+            
+    if request.method == "DELETE": # cancelling a service request
+        service_request = get_object_or_404(ServiceRequest, id = pk)
+        service_request.delete()
+        return JsonResponse({"message": "service request deleted successfully"}, status = 200)
 
     return JsonResponse({"error": "Unsupported request method"}, status=405) 
