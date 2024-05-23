@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 
 from Domains.models import Domain
+from .models import Profile, ExperienceBackground
 
 
 @csrf_exempt
@@ -166,5 +167,122 @@ def professional_view(request, pk=None, *args, **kwargs):
         obj.delete()
 
         return JsonResponse({"message": "professional resource deleted successfully"}, status = 200)
+
+    return JsonResponse({"error": "Unsupported request method"}, status=405)
+
+
+@csrf_exempt
+def profile_view(request, pk = None, *args, **kwargs):
+
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body.decode("utf-8"))
+
+            print(data)
+
+            professional_id = data.get("professional")
+            experience_bg = data.get("experience_bg")
+            about = data.get("about")
+            title = data.get("title")
+            year_of_experience = data.get("year_of_experience")
+
+            if professional_id is None or experience_bg is None or about is None or title is None or year_of_experience is None:
+                return JsonResponse({"error": "All fields are required"}, status=400) 
+            
+            professional = Professional.objects.get(id = professional_id)
+            experience_bg = ExperienceBackground.objects.get(id = experience_bg)
+
+            profile = Profile(
+                professional = professional,
+                experience_bg = experience_bg,
+                about = about,
+                title = title,
+                year_of_experience = year_of_experience,
+            )
+            profile.save()
+
+            data = {
+                "id": profile.id,
+                "professional": profile.professional.id,
+                "experience_bg": profile.experience_bg.id,
+                "about": profile.about,
+                "title": profile.title,
+                "year_of_experience": profile.year_of_experience,
+            }
+            return JsonResponse(data, safe = True, status = 201)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+        except Professional.DoesNotExist:
+            return JsonResponse({"error": "Professional not found"}, status=404)
+        except ExperienceBackground.DoesNotExist:
+            return JsonResponse({"error": "Experience background not found"}, status=404)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+        
+    if request.method == "GET":
+        if pk is not None:
+            try:
+                profile = Profile.objects.get(id = pk)
+
+                data = {
+                    "id": profile.id,
+                    "professional": profile.professional.id,
+                    "experience_bg": profile.experience_bg.id,
+                    "about": profile.about,
+                    "title": profile.title,
+                    "year_of_experience": profile.year_of_experience,
+                }
+                return JsonResponse(data, safe = False) # if the data is not a dictionary set safe to False
+            except Profile.DoesNotExist:
+                return JsonResponse({"error": "Profile not found"}, status=404)
+            
+    if request.method == "PUT":
+        if pk is not None:
+            try:
+                data = json.loads(request.body.decode("utf-8"))
+
+                profile = Profile.objects.get(id = pk)
+
+                professional_id = data.get("professional")
+                experience_bg_id = data.get("experience_bg")
+                about = data.get("about")
+                title = data.get("title")
+                year_of_experience = data.get("year_of_experience")
+
+                if professional_id is not None:
+                    professional = Professional.objects.get(id = professional_id)
+                    #print(profile.professional.id)
+                    if professional_id != profile.professional.id:
+                        return JsonResponse({"error": "Profile professional id can't be changed"})  
+                    else:
+                        profile.professional = professional                  
+                if experience_bg_id is not None:
+                    profile.experience_bg = ExperienceBackground.objects.get(id = experience_bg_id)
+                if about is not None:
+                    profile.about = about 
+                if title is not None:
+                    profile.title = title 
+                if year_of_experience is not None:
+                    profile.year_of_experience = year_of_experience
+
+                profile.save()
+
+                data = {
+                    "id": profile.id,
+                    "professional": profile.professional.id,
+                    "experience_bg": profile.experience_bg.id,
+                    "about": profile.about,
+                    "title": profile.title,
+                    "year_of_experience": profile.year_of_experience,
+                }
+                return JsonResponse(data, safe=False, status=200)
+            except Professional.DoesNotExist:
+                return JsonResponse({"error": "Professional not found"}, status=404)
+            except json.JSONDecodeError:
+                return JsonResponse({"error": "Invalid JSON"}, status=400)
+            except ExperienceBackground.DoesNotExist:
+                return JsonResponse({"error": "Experience background not found"}, status=404)
+            except Exception as e:
+                return JsonResponse({"error": str(e)}, status=500)
 
     return JsonResponse({"error": "Unsupported request method"}, status=405)
