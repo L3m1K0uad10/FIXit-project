@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User  # Assuming we are using Django's built-in User model
+from django.conf import settings
+#from django.contrib.auth.models import User  # Assuming we are using Django's built-in User model
 from Domains.models import Domain
 
 
@@ -15,7 +16,7 @@ class ExperienceBackground(models.Model):
         return f"{self.title} at {self.worked_at}"
     
 class Professional(models.Model):
-    user = models.OneToOneField(User, on_delete = models.CASCADE, related_name = "professional")
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, related_name = "professional")
     #domain = models.OneToOneField(Domain, on_delete = models.CASCADE)
     domain = models.ForeignKey(Domain, on_delete=models.CASCADE)
     photo = models.CharField(max_length = 255, blank = True, null = True)

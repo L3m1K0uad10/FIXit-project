@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User  # Assuming we are using Django's built-in User model
+from django.conf import settings
+#from django.contrib.auth.models import User  # Assuming we are using Django's built-in User model
 
 from Professionals.models import Professional
 from Domains.models import Domain, Service
@@ -18,7 +19,7 @@ class ServiceRequest(models.Model):
         COMPLETED = 'Completed'
         CANCELLED = 'Cancelled'
 
-    user = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'service_requests')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, related_name = 'service_requests')
     professional = models.ForeignKey(Professional, on_delete = models.CASCADE, related_name = 'service_requests')
     category = models.ForeignKey(Domain, on_delete = models.CASCADE, related_name = 'service_requests')
     service = models.ForeignKey(Service, on_delete = models.CASCADE, related_name ='service_requests')

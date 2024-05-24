@@ -3,13 +3,17 @@ import json
 from django.shortcuts import render
 from django.http import JsonResponse
 from Professionals.models import Professional 
-from django.contrib.auth.models import User
+from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 
 from Domains.models import Domain
 from .models import Profile, ExperienceBackground
 
+
+# Get the custom user model
+User = get_user_model()
 
 @csrf_exempt
 def professional_view(request, pk=None, *args, **kwargs):
