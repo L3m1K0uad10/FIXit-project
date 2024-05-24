@@ -13,4 +13,4 @@ class Service(models.Model):
     service_name = models.CharField(max_length = 300, null = False, blank = False, default = "None")
 
     def __str__(self):
-        return self.service_name
+        return f"{self.domain.domain_name} - {self.service_name}"

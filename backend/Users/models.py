@@ -18,7 +18,7 @@ class CustomUser(AbstractUser):
     location = models.CharField(max_length = 100, blank = True)
 
     USERNAME_FIELD = 'email' # this field tells django which field should be used as the unique identifier for the user.
-    REQUIRED_FIELDS = ['username', 'usertype'] # is a list of field names that will be required when creating a superuser with the createsuperuser command
+    REQUIRED_FIELDS = ['username'] # is a list of field names that will be required when creating a superuser with the createsuperuser command
 
     objects = CustomUserManager()
 
