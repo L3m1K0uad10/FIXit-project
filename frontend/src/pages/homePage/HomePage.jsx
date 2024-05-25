@@ -7,12 +7,26 @@ import YaleGear from '../../../../docs/yale-gear.svg'
 import HonoluluGear from '../../../../docs/honolulu-gear.svg'
 import Service from "../../components/service";
 import serviceData from "../../db/servicesData";
+import Button from "../../components/Button";
 
 
 function HomePage() {
 
 	const serviceElements = serviceData.map((service) => (
 		<Service key={service.id} service={service.service} image={service.image} />
+	));
+
+	const style = {
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "center",
+		flexWrap: "wrap",
+		gap: "10px",
+		marginBottom: "30px",
+	}
+
+	const reusableBtnElements = serviceData.map((service) => (
+		<Button key = {service.id} service = {service.service} />
 	));
 
 	return (
@@ -82,16 +96,29 @@ function HomePage() {
 			<main>
 				<section className = "category-section">
 					<h1>Our available domains</h1>
-					<p>insight of domains catalog</p>
+					<p>know more about what we offer for each domains</p>
 					<div className = "horizontal-images home-card-container">{serviceElements}</div>
 				</section>
 
 				<div className = "second-horizontal-div"></div>
 
-				<div className = "user-service">
+				<section className = "reusable-btn-section">
 					<h1>Want to see Professionals profiles?</h1>
 					<p>click any domain service</p>
-					<ul className = "user-service-ul">
+					<div style = {style}>
+						<Button variant = "yale-blue">ELECTRICITY</Button>
+						<Button variant = "honolulu-blue">MASONARY</Button>
+						<Button variant = "yale-blue">TILING</Button>
+						<Button variant = "honolulu-blue">WATERPROOFING</Button>
+						<Button variant = "yale-blue">CARPENTRY</Button>
+						<Button variant = "honolulu-blue">ELECTRONICS</Button>
+						<Button variant = "yale-blue">LANDSCAPING</Button>
+						<Button variant = "honolulu-blue">MECHANICS</Button>
+						<Button variant = "yale-blue">MECHANICS</Button>
+						<Button variant = "honolulu-blue">BARBERSHOP</Button>
+						<Button variant = "yale-blue">SHOPPING</Button>
+					</div>
+					{/* <ul className = "user-service-ul">
 					<li>
 						<button>Plumbing</button>
 					</li>
@@ -116,8 +143,8 @@ function HomePage() {
 					<li>
 						<button>Electrical</button>
 					</li>
-					</ul>
-				</div>
+					</ul> */}
+				</section>
 
 				<div className = "third-horizontal-div"></div>
 				<div>

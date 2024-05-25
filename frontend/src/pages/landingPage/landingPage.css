@@ -163,8 +163,14 @@ body {
   align-items: center;
   width: 300px;
   height: 245px;
-  border: 3px solid var(--berkeley-blue);
+  /* border: 3px solid var(--berkeley-blue); */
   border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover {
+  transform: scale(1.05);
 }
 
 .service-card img {
@@ -187,6 +193,7 @@ body {
   gap: 10px;
   margin-bottom: 60px;
   overflow-x: scroll;
+  padding-bottom: 20px;
 }
 
 .offer-illustration img,
@@ -280,21 +287,23 @@ body {
 .pro-service-inner-left-container button {
   border: 2px solid white;
   background-color: transparent;
+  cursor: pointer;
 }
 
 .pro-service-inner-left-container button:hover {
   border: 2px solid white;
-  background-color: var(--honolulu-blue);
+  background-color: var(--yale-blue);
 }
 
 .offer-inner-right-container button {
   border: 2px solid white;
   background-color: transparent;
+  cursor: pointer;
 }
 
 .offer-inner-right-container button:hover {
   border: 2px solid white;
-  background-color: var(--yale-blue);
+  background-color: var(--honolulu-blue);
 }
 
 .pro-service-inner-left-container div {
