@@ -33,7 +33,7 @@ function LandingPage() {
               </a>
             </Link>
             <div className="navbar-menu-inner-div">
-              <Link to="/AUTHEN">
+              <Link to="/auth">
                 <button type="button" className="btn-login">
                   Login
                 </button>
