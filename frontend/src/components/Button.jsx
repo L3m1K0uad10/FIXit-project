@@ -10,29 +10,14 @@ const ButtonComponent = styled.button`
     vertical-align: middle;
     cursor: pointer;
     user-select: none;
-    border-radius: 0.3rem;
-    padding: 0 
-        ${props => 
-            props.size === "sm" 
-                ? "1.1rem" 
-                : props.size === "md" 
-                ? "1.4rem" 
-                : props.size === "lg" 
-                ? "1.6rem"
-                : "1.1rem"
-        };
-    height: ${props => 
-            props.size === "sm" 
-                ? "34px" 
-                : props.size === "md" 
-                ? "37px" 
-                : props.size === "lg" 
-                ? "40px"
-                : "34px"
-        };
+    padding: 13px 30px;
     font-family: "Inter", sans-serif;
-    font-weight: 500:
-    border: 1px solid transparent;
+    font-weight: 500;
+    border: 1px solid ${props => 
+        props.variant === "yale-blue" 
+            ? "#023d7bff" 
+            : "#1f78b4ff"           
+    };
     background-color: ${props => 
         props.variant === "yale-blue" 
             ? "#023d7bff" 
@@ -43,19 +28,18 @@ const ButtonComponent = styled.button`
             ? "white" 
             : "white"           
     };
+    text-transform: uppercase;
 `;
 
 
-const Button = ({type, variant, className, id, onClick, size, children}) => {
+const Button = ({type, variant, id, onClick, children}) => {
 
     return(
         <ButtonComponent 
             type = {type ? type : "button"}
             variant = {variant}
-            className = {className ? `btn-component ${className}` : "btn-component"}
             id = {id}
             onClick = {onClick}
-            size = {size}
         >
             {children}
         </ButtonComponent>
