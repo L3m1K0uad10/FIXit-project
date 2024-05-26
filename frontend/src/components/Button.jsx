@@ -13,7 +13,7 @@ const ButtonComponent = styled.button`
     padding: 13px 30px;
     font-family: "Inter", sans-serif;
     font-weight: 500;
-    border: 1px solid ${props => 
+    border: 2px solid ${props => 
         props.variant === "yale-blue" 
             ? "#023d7bff" 
             : "#1f78b4ff"           
@@ -29,6 +29,15 @@ const ButtonComponent = styled.button`
             : "white"           
     };
     text-transform: uppercase;
+
+    &:hover {
+        background-color: white;
+        color: ${props => 
+            props.variant === "yale-blue" 
+                ? "#023d7bff" 
+                : "#1f78b4ff"
+        };
+    }
 `;
 
 
@@ -36,6 +45,7 @@ const Button = ({type, variant, id, onClick, children}) => {
 
     return(
         <ButtonComponent 
+            className = "reusable-btn"
             type = {type ? type : "button"}
             variant = {variant}
             id = {id}

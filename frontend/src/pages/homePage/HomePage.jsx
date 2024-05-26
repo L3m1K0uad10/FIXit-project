@@ -47,10 +47,7 @@ function HomePage() {
 					<img src = {Logo} alt = "" className = "nav--logo" />
 					<ul className = "nav-ul-list">
 						<li>
-							<a href = "">About us</a>
-						</li>
-						<li>
-							<a href = "">HOW IT WORKS</a>
+							<a href = "">how it works</a>
 						</li>
 						<li>
 							<a href = "">Professional profiles</a>
