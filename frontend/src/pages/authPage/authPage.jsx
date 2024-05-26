@@ -6,7 +6,9 @@ function AuthPage() {
   return (
     <div className="auth-container">
       <div className="decor-1"></div>
+      <div className="decor-1-1"></div>
       <div className="decor-2"></div>
+      <div className="decor-2-2"></div>
       <div className="auth-core-container">
         <img className="logo" src={Logo} alt="LOGO" />
 
