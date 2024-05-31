@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'Domains',
     'ServiceRequest',
     'Users',
+    'Appointments',
 ]
 
 # for my custom user model
