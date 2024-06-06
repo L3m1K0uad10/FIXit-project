@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'ServiceRequest',
     'Users',
     'Appointments',
+    'Transactions',
 ]
 
 # for my custom user model
