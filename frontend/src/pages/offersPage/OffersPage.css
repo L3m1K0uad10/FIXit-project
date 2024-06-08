@@ -1,0 +1,107 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.Logo {
+  width: 80px;
+}
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(246, 247, 249);
+  border: 5px solid blue;
+  padding: 10px 30px;
+}
+
+.nav-logo {
+  width: 80px;
+}
+
+.nav-u-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  list-style: none;
+  text-decoration: none;
+}
+
+.nav-u-list > a {
+  text-decoration-line: none;
+  list-style: none;
+}
+
+.user-profile {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+}
+.page-discription {
+  margin: 30px 30px;
+}
+.Warranty {
+  padding: 30px 30px;
+}
+.Warranty img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.good-deal {
+  padding: 30px 30px;
+}
+
+.first-paragraph {
+  padding: 30px 30px;
+}
+.inner-hr {
+  background-color: rgb(57, 57, 235);
+  color: white;
+  width: 100%;
+  height: 50px;
+}
+
+.second-hr {
+  background-color: rgb(57, 57, 235);
+  color: white;
+  width: 100%;
+  height: 50px;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  gap: 60px;
+  margin: 20px 20px;
+}
+
+.get-started {
+  margin: 20px 20px;
+}
+
+.footer-container {
+  background-color: blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-container a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+}
+.copy-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 30px;
+}

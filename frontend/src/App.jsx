@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/landingPage/LandingPage";
 import AuthPage from "./pages/authPage/AuthPage";
 import HomePage from "./pages/homePage/HomePage";
+import OffersPage from "./pages/offersPage/OffersPage";
+import ProfessionalPage from "./pages/professionalsPage/professionalPage";
 
 /* import REG_USERPAGE from "./pages/REG-USERPAGE/REG_USERPAGE";
 import SERVICE from "./pages/SERVICE_PROSPAGE/SERVICE";
@@ -15,6 +17,8 @@ function App() {
           <Route path="/" element={<LandingPage />}></Route>
           <Route path="/auth" element={<AuthPage />}></Route>
           <Route path="/home" element={<HomePage />}></Route>
+          <Route path="/offers" element={<OffersPage />}></Route>
+          <Route path="/profession" element={<ProfessionalPage />}></Route>
 
           {/* <Route path="/USER_PAGE" element={<REG_USERPAGE />}></Route>
           <Route path="/SERVICE" element={<SERVICE />}></Route>
