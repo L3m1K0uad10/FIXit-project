@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'Users',
     'Appointments',
     'Transactions',
+    'Reviews',
 ]
 
 # for my custom user model
