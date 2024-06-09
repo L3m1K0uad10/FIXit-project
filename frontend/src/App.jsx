@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/landingPage/LandingPage";
-import AuthPage from "./pages/authPage/AuthPage";
+// import AuthPage from "./pages/authPage/authPage.jsx";
 import HomePage from "./pages/homePage/HomePage";
 import OffersPage from "./pages/offersPage/OffersPage";
 import ProfessionalPage from "./pages/professionalsPage/professionalPage";
@@ -15,12 +15,13 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />}></Route>
-          <Route path="/auth" element={<AuthPage />}></Route>
           <Route path="/home" element={<HomePage />}></Route>
           <Route path="/offers" element={<OffersPage />}></Route>
           <Route path="/profession" element={<ProfessionalPage />}></Route>
 
-          {/* <Route path="/USER_PAGE" element={<REG_USERPAGE />}></Route>
+          {/* 
+          <Route path="/auth" element={<AuthPage />}></Route>
+          <Route path="/USER_PAGE" element={<REG_USERPAGE />}></Route>
           <Route path="/SERVICE" element={<SERVICE />}></Route>
           <Route path="/CREATE" element={<CREATE />}></Route> */}
         </Routes>
