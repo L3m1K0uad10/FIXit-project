@@ -15,29 +15,34 @@
 }
 
 .decor-1 {
-  width: 300px;
+  width: 80px;
   height: 100vh;
-  /* height: 300px; */
-  /* border-radius: 50%; */
   background-color: var(--honolulu-blue);
-  border-top: 100vh solid var(--honolulu-blue);
-  border-right: 130px solid white;
   position: absolute;
-  left: -100px;
-/*   top: -100px;
- */}
+  left: 50px;
+}
+.decor-1-1 {
+  width: 10px;
+  height: 100vh;
+  background-color: var(--honolulu-blue);
+  position: absolute;
+  left: 155px;
+}
 
 .decor-2 {
-  width: 300px;
+  width: 80px;
   height: 100vh;
-  /* height: 300px;
-  border-radius: 50%; */
   background-color: var(--yale-blue);
-  border-top: 100vh solid var(--yale-blue);
-  border-left: 130px solid white;
   position: absolute;
-  right: -100px;
-  /* bottom: -100px; */
+  right: 50px;
+}
+
+.decor-2-2 {
+  width: 10px;
+  height: 100vh;
+  background-color: var(--yale-blue);
+  position: absolute;
+  right: 155px;
 }
 
 .auth-core-container {

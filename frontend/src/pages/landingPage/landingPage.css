@@ -4,6 +4,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Poppins', 'sans-serif';
 }
 
 html {
@@ -162,8 +163,15 @@ body {
   align-items: center;
   width: 300px;
   height: 245px;
-  border: 3px solid var(--berkeley-blue);
+  /* border: 3px solid var(--berkeley-blue); */
   border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.service-card:hover {
+  transform: scale(1.05);
 }
 
 .service-card img {
@@ -180,11 +188,13 @@ body {
 .horizontal-images {
   margin: 0 30px;
   display: flex;
-/*   justify-content: center;
- */  align-items: center;
+  /*   justify-content: center;
+ */
+  align-items: center;
   gap: 10px;
   margin-bottom: 60px;
   overflow-x: scroll;
+  padding-bottom: 20px;
 }
 
 .offer-illustration img,
@@ -194,21 +204,21 @@ body {
 }
 
 .offer-illustration img {
-	position: relative;
-	left: 100px;
-	top: 50px;
-	z-index: 1;
-	border-radius: 2rem;
-	box-shadow: 10px 5px 5px #0000008a;
+  position: relative;
+  left: 100px;
+  top: 50px;
+  z-index: 1;
+  border-radius: 2rem;
+  box-shadow: 10px 5px 5px #0000008a;
 }
 
 .pro-service img {
-	position: relative;
-	right: 100px;
-	top: 50px;
-	z-index: 1;
-	border-radius: 2rem;
-	box-shadow: -10px 5px 5px #0000008a;
+  position: relative;
+  right: 100px;
+  top: 50px;
+  z-index: 1;
+  border-radius: 2rem;
+  box-shadow: -10px 5px 5px #0000008a;
 }
 
 .landing-page-main-container section {
@@ -224,11 +234,11 @@ body {
 }
 
 .offer-inner-right-container {
-	width: 60%;
-	padding-top: 30px;
-	padding-left: 25%;
-	border-top-left-radius: 5rem;
-	border-bottom-right-radius: 5rem;
+  width: 60%;
+  padding-top: 30px;
+  padding-left: 25%;
+  border-top-left-radius: 5rem;
+  border-bottom-right-radius: 5rem;
   background-color: var(--honolulu-blue);
 }
 
@@ -241,30 +251,30 @@ body {
 } */
 
 .offer-inner-right-container div {
-	width: 330px;
-	background-color: white;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-bottom: 20px;
-	padding: 10px 0px;
+  width: 330px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px 0px;
 }
 
 .offer-inner-right-container p {
   padding-bottom: 20px;
-	color: white;
+  color: white;
 }
 
 .pro-service-inner-left-container {
   width: 60%;
-	padding-top: 30px;
-	padding-right: 25%;
-	border-top-right-radius: 5rem;
-	border-bottom-left-radius: 5rem;
+  padding-top: 30px;
+  padding-right: 25%;
+  border-top-right-radius: 5rem;
+  border-bottom-left-radius: 5rem;
   background-color: var(--yale-blue);
-	display: flex;
-	flex-direction: column;
-	align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .pro-service-inner-left-container:hover {
@@ -276,43 +286,45 @@ body {
 } */
 
 .pro-service-inner-left-container button {
-	border: 2px solid white;
-	background-color: transparent;
+  border: 2px solid white;
+  background-color: transparent;
+  cursor: pointer;
 }
 
 .pro-service-inner-left-container button:hover {
-	border: 2px solid white;
-	background-color: var(--honolulu-blue);
+  border: 2px solid white;
+  background-color: var(--yale-blue);
 }
 
 .offer-inner-right-container button {
-	border: 2px solid white;
-	background-color: transparent;
+  border: 2px solid white;
+  background-color: transparent;
+  cursor: pointer;
 }
 
 .offer-inner-right-container button:hover {
-	border: 2px solid white;
-	background-color: var(--yale-blue);
+  border: 2px solid white;
+  background-color: var(--honolulu-blue);
 }
 
 .pro-service-inner-left-container div {
-	width: 330px;
-	background-color: white;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-bottom: 20px;
-	padding: 10px 0px;
+  width: 330px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px 0px;
 }
 
 .pro-service-inner-left-container p {
   padding-bottom: 20px;
-	color: white;
+  color: white;
 }
 
 .pro-service {
   padding-bottom: 60px;
-	margin: 40px 0 100px 0;
+  margin: 40px 0 100px 0;
 }
 
 .testimonies-container {
@@ -336,13 +348,13 @@ body {
 }
 
 .reasons-container h1 {
-	padding-left: 30px;
-	margin-bottom: -20px;
-	color: var(--berkeley-blue);
+  padding-left: 30px;
+  margin-bottom: -20px;
+  color: var(--berkeley-blue);
 }
 
 .reasons-container p {
-	padding-left: 30px;
+  padding-left: 30px;
 }
 
 .reasons-container button {
@@ -350,14 +362,14 @@ body {
   padding: 10px;
   background-color: var(--yale-blue);
   border-color: var(--yale-blue);
-	border-style: solid;
+  border-style: solid;
   color: white;
-	margin-left: 30px;
+  margin-left: 30px;
 }
 
 .reasons-container button:hover {
-	background-color: white;
-	color: var(--yale-blue);
+  background-color: white;
+  color: var(--yale-blue);
 }
 
 .landing-page-main-container hr,
@@ -410,5 +422,5 @@ body {
 .footer h3 {
   text-align: center;
   padding-bottom: 30px;
-	padding-top: 50px;
+  padding-top: 50px;
 }

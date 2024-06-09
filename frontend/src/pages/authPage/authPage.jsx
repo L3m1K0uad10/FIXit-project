@@ -1,15 +1,16 @@
-import { Link } from "react-router-dom";
 import React from "react";
 import Logo from "../../assets/Logo.png";
 import "./authPage.css";
 
 function AuthPage() {
   return (
-    <div className = "auth-container">
+    <div className="auth-container">
       <div className="decor-1"></div>
+      <div className="decor-1-1"></div>
       <div className="decor-2"></div>
+      <div className="decor-2-2"></div>
       <div className="auth-core-container">
-        <img className = "logo" src={Logo} alt="LOGO" />
+        <img className="logo" src={Logo} alt="LOGO" />
 
         <h4>Enter Your Credentials</h4>
 
