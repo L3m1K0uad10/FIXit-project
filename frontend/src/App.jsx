@@ -5,9 +5,6 @@ import AuthPage from "./pages/authPage/AuthPage.jsx";
 import HomePage from "./pages/homePage/HomePage";
 import ProfilesPage from "./pages/profilesPage/ProfilesPage";
 
-/* import REG_USERPAGE from "./pages/REG-USERPAGE/REG_USERPAGE";
-import SERVICE from "./pages/SERVICE_PROSPAGE/SERVICE";
-import CREATE from "./pages/CREATEPAGE/CREATE"; */
 
 function App() {
   return (
@@ -18,8 +15,8 @@ function App() {
           <Route path="/auth" element={<AuthPage />}></Route>
           <Route path="/home" element={<HomePage />}></Route>
           <Route path="/professional-profiles" element={<ProfilesPage />}></Route>
-
-          {/* <Route path="/USER_PAGE" element={<REG_USERPAGE />}></Route>
+          {/* 
+          <Route path="/USER_PAGE" element={<REG_USERPAGE />}></Route>
           <Route path="/SERVICE" element={<SERVICE />}></Route>
           <Route path="/CREATE" element={<CREATE />}></Route> */}
         </Routes>
