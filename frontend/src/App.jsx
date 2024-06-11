@@ -1,7 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import LandingPage from "./pages/landingPage/LandingPage";
-import AuthPage from "./pages/authPage/authPage.jsx";
+import AuthPage from "./pages/authPage/AuthPage.jsx";
 import HomePage from "./pages/homePage/HomePage";
+import ProfilesPage from "./pages/profilesPage/ProfilesPage";
 
 /* import REG_USERPAGE from "./pages/REG-USERPAGE/REG_USERPAGE";
 import SERVICE from "./pages/SERVICE_PROSPAGE/SERVICE";
@@ -15,6 +17,7 @@ function App() {
           <Route path="/" element={<LandingPage />}></Route>
           <Route path="/auth" element={<AuthPage />}></Route>
           <Route path="/home" element={<HomePage />}></Route>
+          <Route path="/professional-profiles" element={<ProfilesPage />}></Route>
 
           {/* <Route path="/USER_PAGE" element={<REG_USERPAGE />}></Route>
           <Route path="/SERVICE" element={<SERVICE />}></Route>
