@@ -4,6 +4,7 @@ import LandingPage from "./pages/landingPage/LandingPage";
 import AuthPage from "./pages/authPage/AuthPage.jsx";
 import HomePage from "./pages/homePage/HomePage";
 import ProfilesPage from "./pages/profilesPage/ProfilesPage";
+import BenefitsPage from "./pages/benefitsPage/BenefitsPage";
 
 
 function App() {
@@ -15,10 +16,7 @@ function App() {
           <Route path="/auth" element={<AuthPage />}></Route>
           <Route path="/home" element={<HomePage />}></Route>
           <Route path="/professional-profiles" element={<ProfilesPage />}></Route>
-          {/* 
-          <Route path="/USER_PAGE" element={<REG_USERPAGE />}></Route>
-          <Route path="/SERVICE" element={<SERVICE />}></Route>
-          <Route path="/CREATE" element={<CREATE />}></Route> */}
+          <Route path="/benefits" element={<BenefitsPage />}></Route>
         </Routes>
       </BrowserRouter>
     </>
