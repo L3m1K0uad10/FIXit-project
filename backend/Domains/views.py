@@ -2,14 +2,14 @@ import json
 
 from django.shortcuts import render
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from django.forms.models import model_to_dict
+from rest_framework.decorators import api_view
 
 from .models import Domain, Service
 
 
-@csrf_exempt
+@api_view(['GET', 'POST', 'PUT', 'DELETE']) 
 def domain_view(request, pk = None, *args, **kwargs):
     
     if request.method == "POST":
@@ -84,7 +84,8 @@ def domain_view(request, pk = None, *args, **kwargs):
 
     return JsonResponse({"error": "Method not allowed"}, status=405)
 
-@csrf_exempt
+
+@api_view(['GET', 'POST', 'PUT', 'DELETE']) 
 def service_view(request, pk = None, *args, **kwargs):
     
     if request.method == "POST":

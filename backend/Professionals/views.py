@@ -5,9 +5,9 @@ from django.http import JsonResponse
 from Professionals.models import Professional 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from django.forms.models import model_to_dict # use to convert a model instance to dict
+from rest_framework.decorators import api_view
 
 from Domains.models import Domain
 from .models import Profile, ExperienceBackground
@@ -16,10 +16,7 @@ from .models import Profile, ExperienceBackground
 # Get the custom user model
 User = get_user_model()
 
-# csrf is required for POST, PUT, DELETE Methods that why if i remove the @csrf_exempt there is error
-# to protect cross-site request forgery 
-# if i create separately the views for each Method the one that handle the GET will work without @csrf_exempt
-@csrf_exempt 
+@api_view(['GET', 'POST', 'PUT', 'DELETE']) 
 def professional_view(request, pk=None, *args, **kwargs):
 
     if request.method == "POST": # create a professional profile
@@ -143,7 +140,8 @@ def professional_view(request, pk=None, *args, **kwargs):
     return JsonResponse({"error": "Unsupported request method"}, status=405)
 
 
-@csrf_exempt
+#@csrf_exempt
+@api_view(['GET', 'POST', 'PUT', 'DELETE']) 
 def profile_view(request, pk = None, *args, **kwargs):
 
     if request.method == "POST":
@@ -153,20 +151,17 @@ def profile_view(request, pk = None, *args, **kwargs):
             print(data)
 
             professional_id = data.get("professional")
-            experience_bg = data.get("experience_bg")
             about = data.get("about")
             title = data.get("title")
             year_of_experience = data.get("year_of_experience")
 
-            if professional_id is None or experience_bg is None or about is None or title is None or year_of_experience is None:
+            if professional_id is None or about is None or title is None or year_of_experience is None:
                 return JsonResponse({"error": "All fields are required"}, status=400) 
             
             professional = Professional.objects.get(id = professional_id)
-            experience_bg = ExperienceBackground.objects.get(id = experience_bg)
 
             profile = Profile(
                 professional = professional,
-                experience_bg = experience_bg,
                 about = about,
                 title = title,
                 year_of_experience = year_of_experience,
@@ -179,8 +174,6 @@ def profile_view(request, pk = None, *args, **kwargs):
             return JsonResponse({"error": "Invalid JSON"}, status=400)
         except Professional.DoesNotExist:
             return JsonResponse({"error": "Professional not found"}, status=404)
-        except ExperienceBackground.DoesNotExist:
-            return JsonResponse({"error": "Experience background not found"}, status=404)
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
         
@@ -202,7 +195,6 @@ def profile_view(request, pk = None, *args, **kwargs):
                 profile = Profile.objects.get(id = pk)
 
                 professional_id = data.get("professional")
-                experience_bg_id = data.get("experience_bg")
                 about = data.get("about")
                 title = data.get("title")
                 year_of_experience = data.get("year_of_experience")
@@ -214,8 +206,6 @@ def profile_view(request, pk = None, *args, **kwargs):
                         return JsonResponse({"error": "Profile professional id can't be changed"})  
                     else:
                         profile.professional = professional                  
-                if experience_bg_id is not None:
-                    profile.experience_bg = ExperienceBackground.objects.get(id = experience_bg_id)
                 if about is not None:
                     profile.about = about 
                 if title is not None:
@@ -231,9 +221,115 @@ def profile_view(request, pk = None, *args, **kwargs):
                 return JsonResponse({"error": "Professional not found"}, status=404)
             except json.JSONDecodeError:
                 return JsonResponse({"error": "Invalid JSON"}, status=400)
+            except Exception as e:
+                return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Unsupported request method"}, status=405)
+
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
+def experience_bg_view(request, pk = None, professional_id = None, *args, **kwargs):
+
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body.decode("utf-8"))
+
+            worked_at = data.get("worked_at")
+            duration = data.get("duration")
+            title = data.get("title")
+            assigned_work = data.get("assigned_work")
+            profile = data.get("profile")
+
+            if not all([worked_at, duration, title, assigned_work, profile is not None]):
+                return JsonResponse({"error": "All fields are required"}, status=400)
+
+            profile = Profile.objects.get(id = profile)
+            
+            experience_bg = ExperienceBackground(
+                worked_at = worked_at,
+                duration = duration,
+                title = title,
+                assigned_work = assigned_work,
+                profile = profile,
+            )
+            experience_bg.save()
+
+            data = model_to_dict(experience_bg)
+            return JsonResponse(data, safe=False, status=201)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+        except ExperienceBackground.DoesNotExist:
+            return JsonResponse({"error": "Experience Background not found"}, status=404)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500) 
+
+    if request.method == "GET":
+        if pk is not None:
+            print(pk)
+            try:
+                experience_bg = ExperienceBackground.objects.get(id = pk) 
+                data = model_to_dict(experience_bg)
+                return JsonResponse(data, safe = False)
+            except ExperienceBackground.DoesNotExist:
+                return JsonResponse({"error": "Review not found"}, status=404)
+            except:
+                return JsonResponse({"error": "Review not found"}, status=404)
+
+        if professional_id is not None:
+            try:
+                professional = Professional.objects.get(id = professional_id)
+                profile = Profile.objects.get(professional = professional)
+                experience_bgs = profile.experience_backgrounds.all()
+                
+                data = []
+                for experience_bg in experience_bgs:
+                    experience_bg_data = model_to_dict(experience_bg)
+                    data.append(experience_bg_data)
+                return JsonResponse(data, safe = False)
+            except Professional.DoesNotExist:
+                return JsonResponse({"error": "Professional not found"}, status=404)
+            except Profile.DoesNotExist:
+                return JsonResponse({"error": "Profile not found for this professional"}, status=404)
+            except ExperienceBackground.DoesNotExist:
+                return JsonResponse({"error": "Message not found"}, status=404)
+            except:
+                return JsonResponse({"error": "Message not found"}, status=404)
+
+    if request.method == "PUT":
+        if pk is not None:
+            try:
+                data = json.loads(request.body.decode("utf-8"))
+
+                experience_bg = ExperienceBackground.objects.get(id = pk)
+
+                worked_at = data.get("worked_at")
+                duration = data.get("duration")
+                title = data.get("title")
+                assigned_work = data.get("assigned_work")
+                 
+                if worked_at is not None:
+                    experience_bg.worked_at = worked_at
+                if duration is not None:
+                    experience_bg.duration = duration 
+                if title is not None:
+                    experience_bg.title = title 
+                if assigned_work is not None:
+                    experience_bg.assigned_work = assigned_work
+
+                experience_bg.save()
+
+                data = model_to_dict(experience_bg)
+                return JsonResponse(data, safe=False, status=200)
+            except json.JSONDecodeError:
+                return JsonResponse({"error": "Invalid JSON"}, status=400)
             except ExperienceBackground.DoesNotExist:
                 return JsonResponse({"error": "Experience background not found"}, status=404)
             except Exception as e:
-                return JsonResponse({"error": str(e)}, status=500)
+                return JsonResponse({"error": str(e)}, status=500) 
+
+    if request.method == "DELETE":
+        obj = get_object_or_404(ExperienceBackground, id = pk)
+        obj.delete()
+
+        return JsonResponse({"message": "Experience Background deleted successfully"}, status = 200)
 
     return JsonResponse({"error": "Unsupported request method"}, status=405)

@@ -5,18 +5,16 @@ from django.http import JsonResponse
 from .models import ServiceRequest
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
+from rest_framework.decorators import api_view
 
 from Professionals.models import Professional
 from Domains.models import Domain, Service
 
 
-# Get the custom user model
-User = get_user_model() #This function retrieves the user model that is defined in AUTH_USER_MODEL in your settings.py
+User = get_user_model() 
 
-# Create your views here.
-@csrf_exempt
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def service_request_view(request, pk = None, *args, **kwargs):
 
     if request.method == "POST":

@@ -3,13 +3,14 @@ import json
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib.auth import login, logout, authenticate
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model
+from rest_framework.decorators import api_view
+from django.forms.models import model_to_dict
 
 
 User = get_user_model()
 
-@csrf_exempt
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def user_view(request, pk = None, *args, **kwargs):
 
     if request.method == "POST": 
@@ -65,13 +66,7 @@ def user_view(request, pk = None, *args, **kwargs):
             # Get detail of a user
             try:
                 user = User.objects.get(id = pk)
-                data = {
-                    "id": user.id,
-                    "username": user.username,
-                    "email": user.email,
-                    "usertype": user.usertype,
-                    "location": user.location,
-                }
+                data = model_to_dict(user)
                 return JsonResponse(data, safe = False)
             except User.DoesNotExist:
                 return JsonResponse({"error": "User not found"}, status=404)
@@ -82,13 +77,8 @@ def user_view(request, pk = None, *args, **kwargs):
         users = User.objects.all()
         data = []
         for user in users:
-            data.append({
-                "id": user.id,
-                "username": user.username,
-                "email": user.email,
-                "usertype": user.usertype,
-                "location": user.location,
-            })
+            user_data = model_to_dict(user)
+            data.append(user_data)
         return JsonResponse(data, safe=False)
  
 

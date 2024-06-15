@@ -2,18 +2,19 @@ import json
 
 from django.shortcuts import render
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.forms.models import model_to_dict
+from rest_framework.decorators import api_view
 
 from Professionals.models import Professional
 from Transactions.models import Transaction
 
+
 User = get_user_model()
 
-@csrf_exempt
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def transaction_view(request, pk = None, user_id = None, professional_id = None, *args, **kwargs):
     
     if request.method == "POST":
