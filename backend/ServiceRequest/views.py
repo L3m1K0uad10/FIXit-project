@@ -6,6 +6,7 @@ from .models import ServiceRequest
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
+from django.forms.models import model_to_dict
 
 from Professionals.models import Professional
 from Domains.models import Domain, Service
@@ -57,16 +58,7 @@ def service_request_view(request, pk = None, *args, **kwargs):
             )   
             service_request.save()
 
-            data = {
-                "id": service_request.id,
-                "professional": service_request.professional.user.username,
-                "category": service_request.category.domain_name,
-                "service": service_request.service.service_name,
-                "description": service_request.description,
-                "urgency": service_request.urgency,
-                "status": service_request.status,
-                "budget": service_request.budget,
-            } 
+            data = model_to_dict(service_request)
             return JsonResponse(data, safe = True, status = 201)
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON"}, status=400)
@@ -86,16 +78,7 @@ def service_request_view(request, pk = None, *args, **kwargs):
             try:
                 service_request = ServiceRequest.objects.get(id = pk)
 
-                data = {
-                    "id": service_request.id,
-                    "professional": service_request.professional.user.username,
-                    "category": service_request.category.domain_name,
-                    "service": service_request.service.service_name,
-                    "description": service_request.description,
-                    "urgency": service_request.urgency,
-                    "status": service_request.status,
-                    "budget": service_request.budget,
-                }
+                data = model_to_dict(service_request)
                 return JsonResponse(data, safe=False)
             except ServiceRequest.DoesNotExist:
                 return JsonResponse({"error": "Service request not found"}, status=404)
@@ -103,16 +86,8 @@ def service_request_view(request, pk = None, *args, **kwargs):
         service_requests = ServiceRequest.objects.all()
         data = []
         for service_request in service_requests:
-            data.append({
-                "id": service_request.id,
-                "professional": service_request.professional.user.username,
-                "category": service_request.category.domain_name,
-                "service": service_request.service.service_name,
-                "description": service_request.description,
-                "urgency": service_request.urgency,
-                "status": service_request.status,
-                "budget": service_request.budget,
-            })
+            service_request_data = model_to_dict(service_request)
+            data.append(service_request_data)
         return JsonResponse(data, safe=False)
     
     if request.method == "PUT":
@@ -133,16 +108,7 @@ def service_request_view(request, pk = None, *args, **kwargs):
                 
                 service_request.save()
 
-                data = {
-                    "id": service_request.id,
-                    "professional": service_request.professional.user.username,
-                    "category": service_request.category.domain_name,
-                    "service": service_request.service.service_name,
-                    "description": service_request.description,
-                    "urgency": service_request.urgency,
-                    "status": service_request.status,
-                    "budget": service_request.budget,
-                }
+                data = model_to_dict(service_request)
                 return JsonResponse(data, safe=False, status=200)
             except ServiceRequest.DoesNotExist:
                 return JsonResponse({"error": "Service request not found"}, status=404)

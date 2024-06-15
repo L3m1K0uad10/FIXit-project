@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.forms.models import model_to_dict
 
 from Professionals.models import Professional
 from .models import Review
@@ -43,14 +44,7 @@ def review_view(request, pk = None, *args, **kwargs):
             )
             review.save()
 
-            data = {
-                "id": review.id,
-                "user": review.user.username,
-                "professional": review.professional.user.username,
-                "rating": review.rating,
-                "comment": review.comment,
-                "timestamp": review.timestamp,
-            }
+            data = model_to_dict(review)
             return JsonResponse(data, safe = False, status = 201)
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON"}, status=400)
@@ -67,14 +61,7 @@ def review_view(request, pk = None, *args, **kwargs):
         if pk is not None:
             try:
                 review = Review.objects.get(id = pk) 
-                data = {
-                    "id": review.id,
-                    "user": review.user.username,
-                    "professional": review.professional.user.username,
-                    "rating": review.rating,
-                    "comment": review.comment,
-                    "timestamp": review.timestamp,
-                }
+                data = model_to_dict(review)
                 return JsonResponse(data, safe = False)
             except Review.DoesNotExist:
                 return JsonResponse({"error": "Review not found"}, status=404)
@@ -84,14 +71,8 @@ def review_view(request, pk = None, *args, **kwargs):
         reviews = Review.objects.all()
         data = []
         for review in reviews:
-            data.append({
-                "id": review.id,
-                "user": review.user.username,
-                "professional": review.professional.user.username,
-                "rating": review.rating,
-                "comment": review.comment,
-                "timestamp": review.timestamp,
-            })
+            review_data = model_to_dict(review)
+            data.append(review_data)
         return JsonResponse(data, safe = False)
     
     if request.method == "PUT":
@@ -117,14 +98,7 @@ def review_view(request, pk = None, *args, **kwargs):
 
                 review.save()
 
-                data = {
-                    "id": review.id,
-                    "user": review.user.username,
-                    "professional": review.professional.user.username,
-                    "rating": review.rating,
-                    "comment": review.comment,
-                    "timestamp": review.timestamp,
-                }
+                data = model_to_dict(review)
                 return JsonResponse(data, safe=False, status=200)
             except Review.DoesNotExist:
                 return JsonResponse({"error": "Review request not found"}, status=404)

@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.forms.models import model_to_dict
 
 from Professionals.models import Professional
 from ServiceRequest.models import ServiceRequest
@@ -43,13 +44,7 @@ def appointment_view(request, pk = None, *args, **kwargs):
                 )
                 appointment.save()
 
-                data = {
-                    "id": appointment.id,
-                    "professional": appointment.professional.user.username,
-                    "user": appointment.user.username,
-                    "service_request": appointment.service_request.id,
-                    "date": appointment.date,
-                }
+                data = model_to_dict(appointment)
             elif status is not None:
                 appointment = Appointment(
                     professional = professional,
@@ -60,14 +55,7 @@ def appointment_view(request, pk = None, *args, **kwargs):
                 )    
                 appointment.save()
 
-                data = {
-                    "id": appointment.id,
-                    "professional": appointment.professional.user.username,
-                    "user": appointment.user.username,
-                    "service_request": appointment.service_request.id,
-                    "date": appointment.date,
-                    "status": appointment.status,
-                }
+                data = model_to_dict(appointment)
             return JsonResponse(data, safe = False, status = 201)
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON"}, status=400)
@@ -84,14 +72,7 @@ def appointment_view(request, pk = None, *args, **kwargs):
         if pk is not None:
             try:
                 appointment = Appointment.objects.get(id = pk) 
-                data = {
-                    "id": appointment.id,
-                    "professional": appointment.professional.user.username,
-                    "user": appointment.user.username,
-                    "service_request": appointment.service_request.id,
-                    "date": appointment.date,
-                    "status": appointment.status,
-                }
+                data = model_to_dict(appointment)
                 return JsonResponse(data, safe = False)
             except:
                 return JsonResponse({"error": "Appointment not found"}, status=404) 
@@ -99,14 +80,8 @@ def appointment_view(request, pk = None, *args, **kwargs):
         appointments = Appointment.objects.all()
         data = []
         for appointment in appointments:
-            data.append({
-                "id": appointment.id,
-                "professional": appointment.professional.user.username,
-                "user": appointment.user.username,
-                "service_request": appointment.service_request.id,
-                "date": appointment.date,
-                "status": appointment.status,
-            })
+            appointment_data = model_to_dict(appointment)
+            data.append(appointment_data)
         return JsonResponse(data, safe = False)
     
     if request.method == "PUT":
@@ -139,24 +114,11 @@ def appointment_view(request, pk = None, *args, **kwargs):
 
                     appointment.save()
 
-                    data = {
-                        "id": appointment.id,
-                        "professional": appointment.professional.user.username,
-                        "user": appointment.user.username,
-                        "service_request": appointment.service_request.id,
-                        "date": appointment.date,
-                        "status": appointment.status,
-                    }
+                    data = model_to_dict(appointment)
                 else:
                     appointment.save()
 
-                    data = {
-                        "id": appointment.id,
-                        "professional": appointment.professional.user.username,
-                        "user": appointment.user.username,
-                        "service_request": appointment.service_request.id,
-                        "date": appointment.date,
-                    }
+                    data = model_to_dict(appointment)
                 return JsonResponse(data, safe = False, status = 200)
             except json.JSONDecodeError:
                 return JsonResponse({"error": "Invalid JSON"}, status=400)

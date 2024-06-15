@@ -7,6 +7,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
+from django.forms.models import model_to_dict # use to convert a model instance to dict
 
 from Domains.models import Domain
 from .models import Profile, ExperienceBackground
@@ -15,7 +16,10 @@ from .models import Profile, ExperienceBackground
 # Get the custom user model
 User = get_user_model()
 
-@csrf_exempt
+# csrf is required for POST, PUT, DELETE Methods that why if i remove the @csrf_exempt there is error
+# to protect cross-site request forgery 
+# if i create separately the views for each Method the one that handle the GET will work without @csrf_exempt
+@csrf_exempt 
 def professional_view(request, pk=None, *args, **kwargs):
 
     if request.method == "POST": # create a professional profile
@@ -43,17 +47,7 @@ def professional_view(request, pk=None, *args, **kwargs):
             )
             professional.save()
 
-            data = {
-                "id": professional.id,
-                "user": {
-                    "username": professional.user.username,
-                    "email": professional.user.email,
-                },
-                "domain": professional.domain.domain_name,
-                "photo": professional.photo,
-                "availability": professional.availability,
-                "rating": professional.rating,
-            }
+            data = model_to_dict(professional)
             return JsonResponse(data, safe=False, status=201)
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON"}, status=400)
@@ -77,17 +71,7 @@ def professional_view(request, pk=None, *args, **kwargs):
             # Handling the detail view for a professional using URL parameter
             try:
                 professional = Professional.objects.get(id=pk)
-                data = {
-                    "id": professional.id,
-                    "user": {
-                        "username": professional.user.username,
-                        "email": professional.user.email,
-                    },
-                    "domain": professional.domain.domain_name,
-                    "photo": professional.photo,
-                    "availability": professional.availability,
-                    "rating": professional.rating,
-                }
+                data = model_to_dict(professional)
                 return JsonResponse(data, safe=False)
             except Professional.DoesNotExist:
                 return JsonResponse({"error": "Professional not found"}, status=404)
@@ -96,17 +80,11 @@ def professional_view(request, pk=None, *args, **kwargs):
         professionals = Professional.objects.all()
         data = []
         for professional in professionals:
-            data.append({
-                "id": professional.id,
-                "user": {
-                    "username": professional.user.username,
-                    "email": professional.user.email,
-                },
-                "domain": professional.domain.domain_name,
-                "photo": professional.photo,
-                "availability": professional.availability,
-                "rating": professional.rating,
-            })
+            professional_data = model_to_dict(professional)  # same as the previous method we used
+            # we can add to it some fields: that specify the exact fields to respond with in other to be more specific
+                #data = model_to_dict(model_data, fields=['id', 'user', 'domain', 'photo', 'availability', 'rating'])
+            data.append(professional_data)
+
         return JsonResponse(data, safe=False)
     
     if request.method == "PUT":
@@ -143,17 +121,7 @@ def professional_view(request, pk=None, *args, **kwargs):
 
                 professional.save()
 
-                data = {
-                    "id": professional.id,
-                    "user": {
-                        "username": professional.user.username,
-                        "email": professional.user.email,
-                    },
-                    "domain": professional.domain.domain_name,
-                    "photo": professional.photo,
-                    "availability": professional.availability,
-                    "rating": professional.rating,
-                }
+                data = model_to_dict(professional)
                 return JsonResponse(data, safe=False, status=200)
             except Professional.DoesNotExist:
                 return JsonResponse({"error": "Professional not found"}, status=404)
@@ -205,14 +173,7 @@ def profile_view(request, pk = None, *args, **kwargs):
             )
             profile.save()
 
-            data = {
-                "id": profile.id,
-                "professional": profile.professional.id,
-                "experience_bg": profile.experience_bg.id,
-                "about": profile.about,
-                "title": profile.title,
-                "year_of_experience": profile.year_of_experience,
-            }
+            data = model_to_dict(profile)
             return JsonResponse(data, safe = True, status = 201)
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON"}, status=400)
@@ -228,14 +189,7 @@ def profile_view(request, pk = None, *args, **kwargs):
             try:
                 profile = Profile.objects.get(id = pk)
 
-                data = {
-                    "id": profile.id,
-                    "professional": profile.professional.id,
-                    "experience_bg": profile.experience_bg.id,
-                    "about": profile.about,
-                    "title": profile.title,
-                    "year_of_experience": profile.year_of_experience,
-                }
+                data = model_to_dict(profile)
                 return JsonResponse(data, safe = False) # if the data is not a dictionary set safe to False
             except Profile.DoesNotExist:
                 return JsonResponse({"error": "Profile not found"}, status=404)
@@ -271,14 +225,7 @@ def profile_view(request, pk = None, *args, **kwargs):
 
                 profile.save()
 
-                data = {
-                    "id": profile.id,
-                    "professional": profile.professional.id,
-                    "experience_bg": profile.experience_bg.id,
-                    "about": profile.about,
-                    "title": profile.title,
-                    "year_of_experience": profile.year_of_experience,
-                }
+                data = model_to_dict(profile)
                 return JsonResponse(data, safe=False, status=200)
             except Professional.DoesNotExist:
                 return JsonResponse({"error": "Professional not found"}, status=404)

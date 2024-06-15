@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.forms.models import model_to_dict
 
 from .models import Message
 
@@ -37,13 +38,7 @@ def message_view(request, pk = None, receiver_id = None, sender_id = None, *args
             )
             message.save()
 
-            data = {
-                "id": message.id,
-                "sender": message.sender.username,
-                "receiver": message.receiver.username,
-                "content": message.content,
-                "timestamp": message.timestamp,
-            }
+            data = model_to_dict(message)
             return JsonResponse(data, safe = False, status = 201)
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON"}, status=400)
@@ -58,13 +53,7 @@ def message_view(request, pk = None, receiver_id = None, sender_id = None, *args
         if pk is not None:
             try:
                 message = Message.objects.get(id = pk) 
-                data = {
-                    "id": message.id,
-                    "sender": message.sender.username,
-                    "receiver": message.receiver.username,
-                    "content": message.content,
-                    "timestamp": message.timestamp,
-                }
+                data = model_to_dict(message)
                 return JsonResponse(data, safe = False)
             except Message.DoesNotExist:
                 return JsonResponse({"error": "Review not found"}, status=404)
@@ -76,13 +65,8 @@ def message_view(request, pk = None, receiver_id = None, sender_id = None, *args
                 messages = Message.objects.filter(sender_id = sender_id)
                 data = []
                 for message in messages:
-                    data.append({
-                        "id": message.id,
-                        "sender": message.sender.username,
-                        "receiver": message.receiver.username,
-                        "content": message.content,
-                        "timestamp": message.timestamp,
-                    })
+                    message_data = model_to_dict(message)
+                    data.append(message_data)
                 return JsonResponse(data, safe = False)
             except Message.DoesNotExist:
                 return JsonResponse({"error": "Message not found"}, status=404)
@@ -94,13 +78,8 @@ def message_view(request, pk = None, receiver_id = None, sender_id = None, *args
                 messages = Message.objects.filter(receiver_id = receiver_id)
                 data = []
                 for message in messages:
-                    data.append({
-                        "id": message.id,
-                        "sender": message.sender.username,
-                        "receiver": message.receiver.username,
-                        "content": message.content,
-                        "timestamp": message.timestamp,
-                    })
+                    message_data = model_to_dict(message)
+                    data.append(message_data)
                 return JsonResponse(data, safe = False)
             except Message.DoesNotExist:
                 return JsonResponse({"error": "Message not found"}, status=404)
@@ -110,13 +89,8 @@ def message_view(request, pk = None, receiver_id = None, sender_id = None, *args
         messages = Message.objects.all()
         data = []
         for message in messages:
-            data.append({
-                "id": message.id,
-                "sender": message.sender.username,
-                "receiver": message.receiver.username,
-                "content": message.content,
-                "timestamp": message.timestamp,
-            })
+            message_data = model_to_dict(message)
+            data.append(message_data)
         return JsonResponse(data, safe = False)
             
     if request.method == "DELETE":

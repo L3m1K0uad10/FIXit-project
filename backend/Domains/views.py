@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
+from django.forms.models import model_to_dict
 
 from .models import Domain, Service
 
@@ -27,10 +28,7 @@ def domain_view(request, pk = None, *args, **kwargs):
             domain = Domain(domain_name = domain_name)
             domain.save()
 
-            data = {
-                "id": domain.id,
-                "domain_name": domain.domain_name,
-            }
+            data = model_to_dict(domain)
             return JsonResponse(data, safe = False, status = 201)
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON"}, status=400)
@@ -41,10 +39,7 @@ def domain_view(request, pk = None, *args, **kwargs):
         if pk is not None:
             try:
                 domain = Domain.objects.get(id = pk) 
-                data = {
-                    "id": domain.id,
-                    "domain_name": domain.domain_name,
-                }
+                data = model_to_dict(domain)
                 return JsonResponse(data, safe = False)
             except:
                 return JsonResponse({"error": "Domain not found"}, status=404) 
@@ -52,10 +47,8 @@ def domain_view(request, pk = None, *args, **kwargs):
         domains = Domain.objects.all()
         data = []
         for domain in domains:
-            data.append({
-                "id": domain.id,
-                "domain_name": domain.domain_name,
-            })
+            domain_data = model_to_dict(domain)
+            data.append(domain_data)
         return JsonResponse(data, safe = False)
     
     if request.method == "PUT":
@@ -74,10 +67,7 @@ def domain_view(request, pk = None, *args, **kwargs):
 
                 domain.save()
 
-                data = {
-                    "id": domain.id,
-                    "domain_name": domain.domain_name,
-                }
+                data = model_to_dict(domain)
                 return JsonResponse(data, safe = False, status = 200)
             except Domain.DoesNotExist:
                 return JsonResponse({"error": "Domain not found"}, status=404)
@@ -119,11 +109,7 @@ def service_view(request, pk = None, *args, **kwargs):
             )
             service.save()
 
-            data = {
-                "id": service.id,
-                "domain": service.domain.id,
-                "service_name": service.service_name
-            }
+            data = model_to_dict(service)
             return JsonResponse(data, safe = True, status = 201)
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON"}, status=400)
@@ -146,11 +132,8 @@ def service_view(request, pk = None, *args, **kwargs):
         services = Service.objects.all()
         data = []
         for service in services:
-            data.append({
-                "id": service.id,
-                "domain": service.domain.id,
-                "service_name": service.service_name,
-            })
+            service_data = model_to_dict(service)
+            data.append(service_data)
         return JsonResponse(data, safe = False, status = 201)
 
     if request.method == "PUT":
@@ -171,11 +154,7 @@ def service_view(request, pk = None, *args, **kwargs):
 
                 service.save()
 
-                data = {
-                    "id": service.id,
-                    "domain": service.domain.id,
-                    "service_name": service.service_name,
-                }
+                data = model_to_dict(service)
                 return JsonResponse(data, safe = True, status = 201)
             except Service.DoesNotExist:
                 return JsonResponse({"error": "Service not found"}, status=404)

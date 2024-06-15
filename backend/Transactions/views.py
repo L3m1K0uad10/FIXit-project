@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.forms.models import model_to_dict
 
 from Professionals.models import Professional
 from Transactions.models import Transaction
@@ -43,14 +44,7 @@ def transaction_view(request, pk = None, user_id = None, professional_id = None,
             )
             transaction.save()
 
-            data = {
-                "id": transaction.id,
-                "user": transaction.user.username,
-                "professional": transaction.professional.user.username,
-                "amount": transaction.amount,
-                "timestamp": transaction.timestamp,
-                "currency": transaction.currency,
-            }
+            data = model_to_dict(transaction)
             return JsonResponse(data, safe = False, status = 201)
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON"}, status=400)
@@ -67,14 +61,7 @@ def transaction_view(request, pk = None, user_id = None, professional_id = None,
         if pk is not None:
             try:
                 transaction = Transaction.objects.get(id = pk) 
-                data = {
-                    "id": transaction.id,
-                    "user": transaction.user.username,
-                    "professional": transaction.professional.user.username,
-                    "amount": transaction.amount,
-                    "timestamp": transaction.timestamp,
-                    "currency": transaction.currency,
-                }
+                data = model_to_dict(transaction)
                 return JsonResponse(data, safe = False)
             except Transaction.DoesNotExist:
                 return JsonResponse({"error": "Transaction not found"}, status=404)
@@ -86,14 +73,8 @@ def transaction_view(request, pk = None, user_id = None, professional_id = None,
                 transactions = Transaction.objects.filter(user_id=user_id)
                 data = []
                 for transaction in transactions:
-                    data.append({
-                        "id": transaction.id,
-                        "user": transaction.user.username,
-                        "professional": transaction.professional.user.username,
-                        "amount": transaction.amount,
-                        "timestamp": transaction.timestamp,
-                        "currency": transaction.currency,
-                    })
+                    transaction_data = model_to_dict(transaction)
+                    data.append(transaction_data)
                 return JsonResponse(data, safe=False)
             except Transaction.DoesNotExist:
                 return JsonResponse({"error": "Transaction not found"}, status=404)
@@ -105,14 +86,8 @@ def transaction_view(request, pk = None, user_id = None, professional_id = None,
                 transactions = Transaction.objects.filter(professional_id=professional_id)
                 data = []
                 for transaction in transactions:
-                    data.append({
-                        "id": transaction.id,
-                        "user": transaction.user.username,
-                        "professional": transaction.professional.user.username,
-                        "amount": transaction.amount,
-                        "timestamp": transaction.timestamp,
-                        "currency": transaction.currency,
-                    })
+                    transaction_data = model_to_dict(transaction)
+                    data.append(transaction_data)
                 return JsonResponse(data, safe=False)
             except Transaction.DoesNotExist:
                 return JsonResponse({"error": "Transaction not found"}, status=404)
@@ -122,14 +97,8 @@ def transaction_view(request, pk = None, user_id = None, professional_id = None,
         transactions = Transaction.objects.all()
         data = []
         for transaction in transactions:
-            data.append({
-                "id": transaction.id,
-                "user": transaction.user.username,
-                "professional": transaction.professional.user.username,
-                "amount": transaction.amount,
-                "timestamp": transaction.timestamp,
-                "currency": transaction.currency,
-            })
+            transaction_data = model_to_dict(transaction)
+            data.append(transaction_data)
         return JsonResponse(data, safe = False)
 
     return JsonResponse({"error": "Method not allowed"}, status=405)
