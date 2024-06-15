@@ -14,19 +14,23 @@ const ButtonComponent = styled.button`
     font-family: "Inter", sans-serif;
     font-weight: 500;
     border: 2px solid ${props => 
-        props.variant === "yale-blue" 
-            ? "#023d7bff" 
-            : "#1f78b4ff"           
+        props.page === "profile-page"
+            ? "#E5E5E5"
+            : props.variant === "yale-blue" 
+                ? "#023d7bff" 
+                : "#1f78b4ff"           
     };
     background-color: ${props => 
-        props.variant === "yale-blue" 
-            ? "#023d7bff" 
-            : "#1f78b4ff"           
+        props.page === "profile-page"
+            ? "white"
+            : props.variant === "yale-blue" 
+                ? "#023d7bff" 
+                : "#1f78b4ff"           
     };
     color: ${props => 
-        props.variant === "yale-blue" 
-            ? "white" 
-            : "white"           
+        props.page === "profile-page"
+            ? "black"
+            : "white"          
     };
     text-transform: uppercase;
 
@@ -41,7 +45,9 @@ const ButtonComponent = styled.button`
 `;
 
 
-const Button = ({type, variant, id, onClick, children}) => {
+const Button = ({type, variant, id, page, onClick, children}) => {
+
+    console.log(page)
 
     return(
         <ButtonComponent 
@@ -50,6 +56,7 @@ const Button = ({type, variant, id, onClick, children}) => {
             variant = {variant}
             id = {id}
             onClick = {onClick}
+            page = {page}
         >
             {children}
         </ButtonComponent>

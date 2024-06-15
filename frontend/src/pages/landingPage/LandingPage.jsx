@@ -96,7 +96,9 @@ function LandingPage() {
               each offer for both the customer user and service <br />
               proposer
             </p>
-            <button>Learn More</button>
+            <Link to = "/benefits">
+              <button>Learn More</button>
+            </Link>
           </div>
         </section>
 
@@ -110,7 +112,9 @@ function LandingPage() {
               each Pro service for both the customer user <br />
               and service proposer
             </p>
-            <button>Learn More</button>
+            <Link to = "/benefits">
+              <button>Learn More</button>
+            </Link>
           </div>
           <div className="pro-service-illustration">
             <img src={DealImage} alt="Six Image" />
@@ -131,7 +135,9 @@ function LandingPage() {
             XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
             XXXXXXXXXXXXXXXXXXXXXXXXXXXX XXXXXXXXXX.
           </p>
-          <button>Learn More</button>
+          <Link to = "/benefits">
+            <button>Learn More</button>
+          </Link>
         </div>
 
         <hr />
