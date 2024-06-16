@@ -8,9 +8,13 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.forms.models import model_to_dict # use to convert a model instance to dict
 from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+
 
 from Domains.models import Domain
 from .models import Profile, ExperienceBackground
+from .serializers import ProfessionalSerializer
 
 
 # Get the custom user model
@@ -20,122 +24,47 @@ User = get_user_model()
 def professional_view(request, pk=None, *args, **kwargs):
 
     if request.method == "POST": # create a professional profile
-        try:
-            data = json.loads(request.body.decode("utf-8"))
+        serializer = ProfessionalSerializer(data = request.data)
+        if serializer.is_valid():
+            instance = serializer.save()
+            response_serializer = ProfessionalSerializer(instance)
+            data = response_serializer.data
+            return Response(data, status = status.HTTP_201_CREATED)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
-            user_id = data.get("user")
-            domain_id = data.get("domain")
-            photo = data.get("photo")
-            availability = data.get("availability")
-            rating = data.get("rating")
-
-            if not all([user_id, domain_id, photo, availability is not None, rating is not None]):
-                return JsonResponse({"error": "All fields are required"}, status=400)
-            
-            user = User.objects.get(id = user_id)
-            domain = Domain.objects.get(id = domain_id)
-
-            professional = Professional(
-                user = user,
-                domain = domain,
-                photo = photo,
-                availability = availability,
-                rating = rating
-            )
-            professional.save()
-
-            data = model_to_dict(professional)
-            return JsonResponse(data, safe=False, status=201)
-        except json.JSONDecodeError:
-            return JsonResponse({"error": "Invalid JSON"}, status=400)
-        except User.DoesNotExist:
-            return JsonResponse({"error": "User not found"}, status=404)
-        except Domain.DoesNotExist:
-            return JsonResponse({"error": "Domain not found"}, status=404)
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
 
     if request.method == "GET":
-        if pk is None:
-            try:
-                decoded_data = request.body.decode("utf-8") # django receives the request data in bytes type so we need to decode it
-                data_dict = json.loads(decoded_data)
-                pk = data_dict["id"]
-            except (json.JSONDecodeError, KeyError, TypeError):
-                pk = None
-
         if pk is not None:
-            # Handling the detail view for a professional using URL parameter
             try:
-                professional = Professional.objects.get(id=pk)
-                data = model_to_dict(professional)
-                return JsonResponse(data, safe=False)
+                professional = Professional.objects.get(pk=pk)
+                serializer = ProfessionalSerializer(professional)
+                return Response(serializer.data)
             except Professional.DoesNotExist:
-                return JsonResponse({"error": "Professional not found"}, status=404)
+                return Response(status=status.HTTP_404_NOT_FOUND)
         
-        # Listing all professionals
-        professionals = Professional.objects.all()
-        data = []
-        for professional in professionals:
-            professional_data = model_to_dict(professional)  # same as the previous method we used
-            # we can add to it some fields: that specify the exact fields to respond with in other to be more specific
-                #data = model_to_dict(model_data, fields=['id', 'user', 'domain', 'photo', 'availability', 'rating'])
-            data.append(professional_data)
-
-        return JsonResponse(data, safe=False)
+        queryset = Professional.objects.all()
+        serializer = ProfessionalSerializer(queryset, many=True)
+        data = serializer.data
+        return Response(data)
     
     if request.method == "PUT":
-        if pk is None:
-            try:
-                decoded_data = request.body.decode("utf-8")
-                data_dict = json.loads(decoded_data)
-                pk = data_dict["id"]
-            except (json.JSONDecodeError, KeyError, TypeError):
-                pk = None
-        
         if pk is not None:
             try:
-                data = json.loads(request.body.decode("utf-8"))
-
-                professional = Professional.objects.get(id = pk)
-
-                user_id = data.get("user")
-                domain_id = data.get("domain")
-                photo = data.get("photo")
-                availability = data.get("availability")
-                rating = data.get("rating")
-
-                if user_id is not None:
-                    professional.user = User.objects.get(id = user_id)
-                if domain_id is not None:
-                    professional.domain = Domain.objects.get(id = domain_id)
-                if photo is not None:
-                    professional.photo = photo 
-                if availability is not None:
-                    professional.availability = availability 
-                if rating is not None:
-                    professional.rating = rating 
-
-                professional.save()
-
-                data = model_to_dict(professional)
-                return JsonResponse(data, safe=False, status=200)
+                professional = Professional.objects.get(pk=pk)
+                serializer = ProfessionalSerializer(professional, data=request.data, partial = True) # partial set to true give the leverage to handle partial updates, PATCH method can be used as well for partial update
+                if serializer.is_valid():
+                    instance = serializer.save()
+                    response_serializer = ProfessionalSerializer(instance)
+                    data = response_serializer.data
+                    return Response(data, status = status.HTTP_200_OK)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             except Professional.DoesNotExist:
-                return JsonResponse({"error": "Professional not found"}, status=404)
-            except json.JSONDecodeError:
-                return JsonResponse({"error": "Invalid JSON"}, status=400)
-            except User.DoesNotExist:
-                return JsonResponse({"error": "User not found"}, status=404)
-            except Domain.DoesNotExist:
-                return JsonResponse({"error": "Domain not found"}, status=404)
-            except Exception as e:
-                return JsonResponse({"error": str(e)}, status=500)
-
+                return Response({"detail": "Professional not found"}, status=status.HTTP_404_NOT_FOUND)
+            
     if request.method == "DELETE":
-        obj = get_object_or_404(Professional, id = pk)
-        obj.delete()
-
-        return JsonResponse({"message": "professional resource deleted successfully"}, status = 200)
+        instance = get_object_or_404(Professional, pk=pk)
+        instance.delete()
+        return Response(status = status.HTTP_204_NO_CONTENT) # once delete the status code is 204 therefore No content, it is the Strict RESTful conventions(common way)
 
     return JsonResponse({"error": "Unsupported request method"}, status=405)
 
