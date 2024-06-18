@@ -5,15 +5,6 @@ from Domains.models import Domain
 
 
 # Create your models here.
-
-class ExperienceBackground(models.Model):
-    worked_at = models.CharField(max_length = 100)
-    duration = models.CharField(max_length = 50)
-    title = models.CharField(max_length = 100)
-    assigned_work = models.TextField()
-
-    def __str__(self):
-        return f"{self.title} at {self.worked_at}"
     
 class Professional(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, related_name = "professional")
@@ -28,13 +19,22 @@ class Professional(models.Model):
 
 class Profile(models.Model):
     professional = models.OneToOneField(Professional, on_delete = models.CASCADE, related_name = 'profile')
-    experience_bg = models.ForeignKey(ExperienceBackground, on_delete = models.CASCADE, related_name = 'profiles')
     about = models.TextField(blank = True, null = True)
     title = models.CharField(max_length = 100, blank = True, null = True)
     year_of_experience = models.IntegerField(default = 0)
 
     def __str__(self):
         return f"{self.professional.user.username}'s Profile"
+    
+class ExperienceBackground(models.Model):
+    worked_at = models.CharField(max_length = 100)
+    duration = models.CharField(max_length = 50)
+    title = models.CharField(max_length = 100)
+    assigned_work = models.TextField()
+    profile = models.ForeignKey(Profile, on_delete = models.CASCADE, related_name = 'experience_backgrounds')
+
+    def __str__(self):
+        return f"{self.title} at {self.worked_at}"
 
 class Video(models.Model):
     professional = models.ForeignKey(Professional, on_delete = models.CASCADE, related_name = 'videos')
