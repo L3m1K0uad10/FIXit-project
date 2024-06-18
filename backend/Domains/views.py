@@ -1,177 +1,104 @@
-import json
-
-from django.shortcuts import render
-from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from django.forms.models import model_to_dict
 from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
 
 from .models import Domain, Service
+from .serializers import DomainSerializer, ServiceSerializer
 
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE']) 
 def domain_view(request, pk = None, *args, **kwargs):
     
     if request.method == "POST":
-        try:
-            data = json.loads(request.body.decode("utf-8"))
+        serializer = DomainSerializer(data = request.data)
+        if serializer.is_valid():
+            instance = serializer.save()
+            serializer_response = DomainSerializer(instance)
+            data = serializer_response.data
+            return Response(data, status = status.HTTP_201_CREATED)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
             
-            domain_name = data.get("domain_name")
-
-            if domain_name is None:
-                return JsonResponse({"error": "All fields are required"}, status = 400)
-            
-            # checking if the domain already exists
-            if Domain.objects.filter(domain_name = domain_name).exists():
-                return JsonResponse({"error": "Domain already exists"}, status=400)
-            
-            domain = Domain(domain_name = domain_name)
-            domain.save()
-
-            data = model_to_dict(domain)
-            return JsonResponse(data, safe = False, status = 201)
-        except json.JSONDecodeError:
-            return JsonResponse({"error": "Invalid JSON"}, status=400)
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
 
     if request.method == "GET":
         if pk is not None:
             try:
                 domain = Domain.objects.get(id = pk) 
-                data = model_to_dict(domain)
-                return JsonResponse(data, safe = False)
-            except:
-                return JsonResponse({"error": "Domain not found"}, status=404) 
-
-        domains = Domain.objects.all()
-        data = []
-        for domain in domains:
-            domain_data = model_to_dict(domain)
-            data.append(domain_data)
-        return JsonResponse(data, safe = False)
+                serializer = DomainSerializer(domain)
+                return Response(serializer.data)
+            except Domain.DoesNotExist:
+                return Response({"detail": "Domain not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        queryset = Domain.objects.all()
+        serializer = DomainSerializer(queryset, many = True)
+        data = serializer.data
+        return Response(data)
     
     if request.method == "PUT":
         if pk is not None:
             try:
-                data = json.loads(request.body.decode("utf-8"))
-
-                domain = Domain.objects.get(id = pk) 
-
-                domain_name = data.get("domain_name")
-
-                if domain_name is None:
-                    return JsonResponse({"error": "domain_name field is required"})
-
-                domain.domain_name = domain_name
-
-                domain.save()
-
-                data = model_to_dict(domain)
-                return JsonResponse(data, safe = False, status = 200)
+                domain = Domain.objects.get(pk = pk)
+                serializer = DomainSerializer(domain, data=request.data, partial = True) 
+                if serializer.is_valid():
+                    instance = serializer.save()
+                    response_serializer = DomainSerializer(instance)
+                    data = response_serializer.data
+                    return Response(data, status = status.HTTP_200_OK)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             except Domain.DoesNotExist:
-                return JsonResponse({"error": "Domain not found"}, status=404)
-            except json.JSONDecodeError:
-                return JsonResponse({"error": "Invalid JSON"}, status=400)
-            except Exception as e:
-                return JsonResponse({"error": str(e)}, status=500) 
+                return Response({"detail": "Domain not found"}, status=status.HTTP_404_NOT_FOUND)
             
     if request.method == "DELETE":
-        obj = get_object_or_404(Domain, id = pk)
-        obj.delete()
+        instance = get_object_or_404(Domain, pk=pk)
+        instance.delete()
+        return Response(status = status.HTTP_204_NO_CONTENT)
 
-        return JsonResponse({"message": "domain resource deleted successfully"}, status = 200)
-
-    return JsonResponse({"error": "Method not allowed"}, status=405)
+    return Response({"error": "Method not allowed"}, status = status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE']) 
 def service_view(request, pk = None, *args, **kwargs):
     
     if request.method == "POST":
-        try:
-            data = json.loads(request.body.decode("utf-8"))
-
-            domain_id = data.get("domain")
-            service_name = data.get("service_name")
-
-            if domain_id is None or service_name is None:
-                return JsonResponse({"error": "All fields are required"}, status = 400)
-                
-            #checking if the service already exists
-            if Service.objects.filter(service_name = service_name).exists():
-                return JsonResponse({"error": "Service already exists"}, status=400)
-            
-            domain = Domain.objects.get(id = domain_id)
-                
-            service = Service(
-                domain = domain,
-                service_name = service_name
-            )
-            service.save()
-
-            data = model_to_dict(service)
-            return JsonResponse(data, safe = True, status = 201)
-        except json.JSONDecodeError:
-            return JsonResponse({"error": "Invalid JSON"}, status=400)
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500) 
-
+        serializer = ServiceSerializer(data = request.data)
+        if serializer.is_valid():
+            instance = serializer.save()
+            serializer_response = ServiceSerializer(instance)
+            data = serializer_response.data
+            return Response(data, status = status.HTTP_201_CREATED)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+             
     if request.method == "GET":
         if pk is not None:
             try:
                 service = Service.objects.get(id = pk) 
-                data = {
-                    "id": service.id,
-                    "domain": service.domain.id,
-                    "service_name": service.service_name,
-                }
-                return JsonResponse(data, safe = False, status = 201)
-            except:
-                return JsonResponse({"error": "Service not found"}, status=404)
+                serializer = ServiceSerializer(service)
+                return Response(serializer.data)
+            except Service.DoesNotExist:
+                return Response({"detail": "Service not found"}, status=status.HTTP_404_NOT_FOUND)
         
-        services = Service.objects.all()
-        data = []
-        for service in services:
-            service_data = model_to_dict(service)
-            data.append(service_data)
-        return JsonResponse(data, safe = False, status = 201)
+        queryset = Service.objects.all()
+        serializer = ServiceSerializer(queryset, many = True)
+        data = serializer.data
+        return Response(data)
 
     if request.method == "PUT":
         if pk is not None:
             try:
-                data = json.loads(request.body.decode("utf-8"))
-
-                service = Service.objects.get(id = pk)
-                
-                domain_id = data.get("domain")
-                service_name = data.get("service_name")
-
-                if domain_id is None or service_name is None:
-                    return JsonResponse({"error": "All fields are required"}, status = 400)
-
-                service.domain.id = domain_id 
-                service.service_name = service_name
-
-                service.save()
-
-                data = model_to_dict(service)
-                return JsonResponse(data, safe = True, status = 201)
+                service = Service.objects.get(pk = pk)
+                serializer = ServiceSerializer(service, data=request.data, partial = True) 
+                if serializer.is_valid():
+                    instance = serializer.save()
+                    response_serializer = ServiceSerializer(instance)
+                    data = response_serializer.data
+                    return Response(data, status = status.HTTP_200_OK)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             except Service.DoesNotExist:
-                return JsonResponse({"error": "Service not found"}, status=404)
-            except json.JSONDecodeError:
-                return JsonResponse({"error": "Invalid JSON"}, status=400)
-            except Exception as e:
-                return JsonResponse({"error": str(e)}, status=500)
+                return Response({"detail": "Service not found"}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "DELETE":
-        if pk is not None:
-            try:
-                obj = get_object_or_404(Service, id = pk)
-                obj.delete() 
+        instance = get_object_or_404(Service, pk=pk)
+        instance.delete()
+        return Response(status = status.HTTP_204_NO_CONTENT)
 
-                return JsonResponse({"message": "service resource deleted successfully"}, status = 200)
-            except Exception as e:
-                return JsonResponse({"error": str(e)}, status=500)
-
-    return JsonResponse({"error": "Method not allowed"}, status = 405)
+    return Response({"error": "Method not allowed"}, status = status.HTTP_405_METHOD_NOT_ALLOWED)

@@ -3,32 +3,11 @@ from django.contrib.auth import get_user_model
 
 from .models import Professional, Profile, ExperienceBackground
 from Domains.models import Domain
+from Domains.serializers import DomainSerializer
+from Users.serializers import UserSerializer
 
 
 User = get_user_model()
-
-class UserSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=True)
-
-    class Meta:
-        model = User
-        fields = [
-            'id', 
-            'username', 
-            'email', 
-            'usertype', 
-            'location'
-        ]
-
-class DomainSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=True)
-
-    class Meta:
-        model = Domain
-        fields = [
-            'id', 
-            'domain_name'
-        ]
 
 class ProfessionalSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset = User.objects.all(), write_only = True)

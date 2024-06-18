@@ -1,105 +1,53 @@
-import json
-
-from django.shortcuts import render
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
-from django.conf import settings
-from django.contrib.auth import get_user_model
-from django.forms.models import model_to_dict
 from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
 
-from Professionals.models import Professional
 from Transactions.models import Transaction
+from .serializers import TransactionSerializer
 
-
-User = get_user_model()
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def transaction_view(request, pk = None, user_id = None, professional_id = None, *args, **kwargs):
     
     if request.method == "POST":
-        try:
-            data = json.loads(request.body.decode("utf-8"))
-            
-            user_id = data.get("user")
-            professional_id = data.get("professional")
-            amount = data.get("amount")
-            timestamp = data.get("timestamp")
-            currency = data.get("currency")
-
-            if user_id is None or professional_id is None or amount is None:
-                return JsonResponse({"error": "All fields are required"}, status = 400)
-            
-            user = User.objects.get(id = user_id)        
-            professional = Professional.objects.get(id = professional_id)
-
-            if currency is None:
-                currency = "USD"
-
-            transaction = Transaction(
-                user = user,
-                professional = professional,
-                amount = amount,
-                timestamp = timestamp,
-                currency = currency
-            )
-            transaction.save()
-
-            data = model_to_dict(transaction)
-            return JsonResponse(data, safe = False, status = 201)
-        except json.JSONDecodeError:
-            return JsonResponse({"error": "Invalid JSON"}, status=400)
-        except User.DoesNotExist:
-            return JsonResponse({"error": "User not found"}, status=404)
-        except Professional.DoesNotExist:
-            return JsonResponse({"error": "Professional not found"}, status=404)
-        except Transaction.DoesNotExist:
-            return JsonResponse({"error": "Transaction not found"}, status=404)
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
+        serializer = TransactionSerializer(data = request.data)
+        if serializer.is_valid():
+            instance = serializer.save()
+            serializer_response = TransactionSerializer(instance)
+            data = serializer_response.data 
+            return Response(data, status = status.HTTP_201_CREATED)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
     if request.method == "GET":
         if pk is not None:
             try:
                 transaction = Transaction.objects.get(id = pk) 
-                data = model_to_dict(transaction)
-                return JsonResponse(data, safe = False)
+                serializer = TransactionSerializer(transaction)
+                return Response(serializer.data)
             except Transaction.DoesNotExist:
-                return JsonResponse({"error": "Transaction not found"}, status=404)
-            except:
-                return JsonResponse({"error": "Transaction not found"}, status=404)
+                return Response({"error": "Transaction not found"}, status = status.HTTP_404_NOT_FOUND)
              
         if user_id is not None:
             try:
-                transactions = Transaction.objects.filter(user_id=user_id)
-                data = []
-                for transaction in transactions:
-                    transaction_data = model_to_dict(transaction)
-                    data.append(transaction_data)
-                return JsonResponse(data, safe=False)
+                queryset = Transaction.objects.filter(user_id = user_id)
+                serializer = TransactionSerializer(queryset, many = True)
+                data = serializer.data
+                return Response(data)
             except Transaction.DoesNotExist:
-                return JsonResponse({"error": "Transaction not found"}, status=404)
-            except:
-                return JsonResponse({"error": "Transaction not found"}, status=404)
+                return Response({"error": "Transaction not found"}, status = status.HTTP_404_NOT_FOUND)
 
         if professional_id is not None:
             try:
-                transactions = Transaction.objects.filter(professional_id=professional_id)
-                data = []
-                for transaction in transactions:
-                    transaction_data = model_to_dict(transaction)
-                    data.append(transaction_data)
-                return JsonResponse(data, safe=False)
+                queryset = Transaction.objects.filter(professional_id = professional_id)
+                serializer = TransactionSerializer(queryset, many = True)
+                data = serializer.data
+                return Response(data)
             except Transaction.DoesNotExist:
-                return JsonResponse({"error": "Transaction not found"}, status=404)
-            except:
-                return JsonResponse({"error": "Transaction not found"}, status=404)
+                return Response({"error": "Transaction not found"}, status = status.HTTP_404_NOT_FOUND)
 
-        transactions = Transaction.objects.all()
-        data = []
-        for transaction in transactions:
-            transaction_data = model_to_dict(transaction)
-            data.append(transaction_data)
-        return JsonResponse(data, safe = False)
+        queryset = Transaction.objects.all()
+        serializer = TransactionSerializer(queryset, many = True)
+        data = serializer.data
+        return Response(data)
 
-    return JsonResponse({"error": "Method not allowed"}, status=405)
+    return Response({"error": "Method not allowed"}, status = status.HTTP_405_METHOD_NOT_ALLOWED)

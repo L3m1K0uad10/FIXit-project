@@ -1,24 +1,12 @@
-import json
-
-from django.shortcuts import render
-from django.http import JsonResponse
 from Professionals.models import Professional 
-from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-from django.forms.models import model_to_dict # use to convert a model instance to dict
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
-
-from Domains.models import Domain
 from .models import Profile, ExperienceBackground
 from .serializers import ProfessionalSerializer, ProfileSerializer, ExperienceBackgroundSerializer
 
-
-# Get the custom user model
-User = get_user_model()
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE']) 
 def professional_view(request, pk = None, *args, **kwargs):
@@ -66,8 +54,7 @@ def professional_view(request, pk = None, *args, **kwargs):
         instance.delete()
         return Response(status = status.HTTP_204_NO_CONTENT) # once delete the status code is 204 therefore No content, it is the Strict RESTful conventions(common way)
 
-    return JsonResponse({"error": "Unsupported request method"}, status=405)
-
+    return Response({"error": "Method not allowed"}, status = status.HTTP_405_METHOD_NOT_ALLOWED)
 
 #@csrf_exempt
 @api_view(['GET', 'POST', 'PUT', 'DELETE']) 
@@ -105,7 +92,8 @@ def profile_view(request, pk = None, *args, **kwargs):
             except Profile.DoesNotExist:
                 return Response({"detail": "Profile not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    return JsonResponse({"error": "Unsupported request method"}, status=405)
+    return Response({"error": "Method not allowed"}, status = status.HTTP_405_METHOD_NOT_ALLOWED)
+
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def experience_bg_view(request, pk = None, professional_id = None, *args, **kwargs):
@@ -161,4 +149,4 @@ def experience_bg_view(request, pk = None, professional_id = None, *args, **kwar
         instance.delete()
         return Response(status = status.HTTP_204_NO_CONTENT)
 
-    return JsonResponse({"error": "Unsupported request method"}, status=405)
+    return Response({"error": "Method not allowed"}, status = status.HTTP_405_METHOD_NOT_ALLOWED)
