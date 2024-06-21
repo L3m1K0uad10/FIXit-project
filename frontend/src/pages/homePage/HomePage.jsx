@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faList } from "@fortawesome/free-solid-svg-icons";
@@ -47,9 +48,9 @@ function HomePage() {
         <nav className="home-nav">
           <img src={Logo} alt="" className="nav--logo" />
           <ul className="nav-ul-list">
-            <li>
+            <Link to = "/how-it-works">
               <a href="">how it works</a>
-            </li>
+            </Link>
             <li>
               <a href="">Professional profiles</a>
             </li>
@@ -157,7 +158,9 @@ function HomePage() {
                   <p>Have a great day!</p>
                 </div>
               </ol>
-              <button>LEARN MORE</button>
+              <Link to = "/how-it-works">
+                <button>LEARN MORE</button>
+              </Link>
             </div>
             <img src={StepImage} alt="" />
           </div>
