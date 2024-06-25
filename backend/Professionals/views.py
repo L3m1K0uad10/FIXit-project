@@ -3,25 +3,36 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import generics
 
 from .models import Profile, ExperienceBackground
 from .serializers import ProfessionalSerializer, ProfileSerializer, ExperienceBackgroundSerializer
 
 
-@api_view(['GET', 'POST', 'PUT', 'DELETE']) 
+class ProfessionalListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Professional.objects.all()
+    serializer_class = ProfessionalSerializer
+
+class ProfessionalDetailAPIView(generics.RetrieveAPIView):
+    queryset = Professional.objects.all()
+    serializer_class = ProfessionalSerializer
+
+
+#@api_view(['GET', 'POST', 'PUT', 'DELETE']) 
+@api_view(['PUT', 'DELETE']) 
 def professional_view(request, pk = None, *args, **kwargs):
 
-    if request.method == "POST": # create a professional profile
+    """ if request.method == "POST": # create a professional profile
         serializer = ProfessionalSerializer(data = request.data)
         if serializer.is_valid():
             instance = serializer.save()
             response_serializer = ProfessionalSerializer(instance)
             data = response_serializer.data
             return Response(data, status = status.HTTP_201_CREATED)
-        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST) """
 
 
-    if request.method == "GET":
+    """ if request.method == "GET":
         if pk is not None:
             try:
                 professional = Professional.objects.get(pk = pk)
@@ -33,7 +44,7 @@ def professional_view(request, pk = None, *args, **kwargs):
         queryset = Professional.objects.all()
         serializer = ProfessionalSerializer(queryset, many = True)
         data = serializer.data
-        return Response(data)
+        return Response(data) """
     
     if request.method == "PUT":
         if pk is not None:
