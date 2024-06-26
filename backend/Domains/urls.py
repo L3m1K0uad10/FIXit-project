@@ -1,17 +1,18 @@
 from django.urls import path
 
-from .views import domain_view, service_view
+from . import views
 
 
 urlpatterns = [
-    path("", domain_view, name = "domain_list"),
-    path("create/", domain_view, name = "domain_create"),
-    path("<int:pk>/", domain_view, name = "domain_detail"),
-    path("update/<int:pk>/", domain_view, name = "domain_update"),
-    path("delete/<int:pk>/", domain_view, name = "domain_delete"),
-    path("services/create/", service_view, name = "service_create"),
-    path("services/", service_view, name = "service_list"),
-    path("services/<int:pk>/", service_view, name = "service_detail"),
-    path("services/update/<int:pk>/", service_view, name = "service_update"),
-    path("services/delete/<int:pk>/", service_view, name = "service_delete"),
+    path("", views.DomainListCreateAPIView.as_view(), name = "domain_list"),
+    path("create/", views.DomainListCreateAPIView.as_view(), name = "domain_create"),
+    path("<int:pk>/", views.DomainDetailAPIView.as_view(), name = "domain_detail"),
+    path("update/<int:pk>/", views.DomainUpdateAPIView.as_view(), name = "domain_update"),
+    path("delete/<int:pk>/", views.DomainDestroyAPIView.as_view(), name = "domain_delete"),
+    
+    path("services/create/", views.ServiceListCreateAPIView.as_view(), name = "service_create"),
+    path("services/", views.ServiceListCreateAPIView.as_view(), name = "service_list"),
+    path("services/<int:pk>/", views.ServiceDetailAPIView.as_view(), name = "service_detail"),
+    path("services/update/<int:pk>/", views.ServiceUpdateAPIView.as_view(), name = "service_update"),
+    path("services/delete/<int:pk>/", views.ServiceDestroyAPIView.as_view(), name = "service_delete"),
 ]
