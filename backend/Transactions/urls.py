@@ -1,12 +1,12 @@
 from django.urls import path 
 
-from .views import transaction_view
+from . import views
 
 
 urlpatterns = [
-    path("create/", transaction_view, name = "transaction_create"),
-    path("", transaction_view, name = "transaction_list"),
-    path("<int:pk>/", transaction_view, name = "transaction_detail"),
-    path("user/<int:user_id>/", transaction_view, name = "transaction_user_detail"),
-    path("professional/<int:professional_id>/", transaction_view, name = "transaction_professional_detail"),
+    path("create/", views.TransactionListeCreateAPIView.as_view(), name = "transaction_create"),
+    path("", views.TransactionListeCreateAPIView.as_view(), name = "transaction_list"),
+    path("<int:pk>/", views.TransactionDetailAPIView.as_view(), name = "transaction_detail"),
+    path("user/<int:user_id>/", views.TransactionListAPIView.as_view(), name = "transaction_user_detail"),
+    path("professional/<int:professional_id>/", views.TransactionListAPIView.as_view(), name = "transaction_professional_detail"),
 ]
