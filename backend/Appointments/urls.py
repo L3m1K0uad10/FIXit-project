@@ -1,12 +1,12 @@
 from django.urls import path
 
-from .views import appointment_view
+from . import views
 
 
 urlpatterns = [
-    path("create/", appointment_view, name = "appointment_create"),
-    path("", appointment_view, name = "appointment_list"),
-    path("<int:pk>/", appointment_view, name = "appointment_detail"),
-    path("update/<int:pk>/", appointment_view, name = "appointment_update"),
-    path("delete/<int:pk>/", appointment_view, name = "appointment_delete"),
+    path("create/", views.AppointmentListCreateAPIView.as_view(), name = "appointment_create"),
+    path("", views.AppointmentListCreateAPIView.as_view(), name = "appointment_list"),
+    path("<int:pk>/", views.AppointmentDetailAPIView.as_view(), name = "appointment_detail"),
+    path("update/<int:pk>/", views.AppointmentUpdateAPIView.as_view(), name = "appointment_update"),
+    path("delete/<int:pk>/", views.AppointmentDestroyAPIView.as_view(), name = "appointment_delete"),
 ]
