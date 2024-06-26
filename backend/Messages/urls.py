@@ -1,12 +1,13 @@
 from django.urls import path
 
-from .views import message_view
+from . import views
+
 
 urlpatterns = [
-    path("", message_view, name = "message_list"),
-    path("create/", message_view, name = "message_create"),
-    path("<int:pk>/", message_view, name = "message_detail"),
-    path("inbox/<int:receiver_id>/", message_view, name = "message_by_receiver"),
-    path("sent/<int:sender_id>/", message_view, name = "message_by_sender"),
-    path("delete/<int:pk>/", message_view, name = "message_delete"),
+    path("", views.MessageListCreateAPIView.as_view(), name = "message_list"),
+    path("create/", views.MessageListCreateAPIView.as_view(), name = "message_create"),
+    path("<int:pk>/", views.MessageDetailAPIView.as_view(), name = "message_detail"),
+    path("inbox/<int:receiver_id>/", views.MessageListAPIView.as_view(), name = "message_by_receiver"),
+    path("sent/<int:sender_id>/", views.MessageListAPIView.as_view(), name = "message_by_sender"),
+    path("delete/<int:pk>/", views.MessageDestroyAPIView.as_view(), name = "message_delete"),
 ]
