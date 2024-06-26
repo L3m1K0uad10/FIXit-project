@@ -39,98 +39,84 @@ class ProfessionalDestroyAPIView(generics.DestroyAPIView):
     lookup_field = "pk"
 
 
+# Profile views
+class ProfileCreateAPIView(generics.CreateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
 
-#@csrf_exempt
-@api_view(['GET', 'POST', 'PUT', 'DELETE']) 
-def profile_view(request, pk = None, *args, **kwargs):
+class ProfileDetailAPIView(generics.RetrieveAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    lookup_field = "pk"
 
-    if request.method == "POST":
-        serializer = ProfileSerializer(data = request.data)
+class ProfileUpdateAPIView(generics.UpdateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    lookup_field = "pk"
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop("partial", True)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data = request.data, partial = partial)
         if serializer.is_valid():
-            instance = serializer.save()
-            response_serializer = ProfileSerializer(instance)
-            data = response_serializer.data
-            return Response(data, status = status.HTTP_201_CREATED)
-        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
-        
-    if request.method == "GET":
-        if pk is not None:
-            try:
-                profile = Profile.objects.get(pk = pk)
-                serializer = ProfileSerializer(profile)
-                return Response(serializer.data)
-            except Profile.DoesNotExist:
-                return Response({"detail": "Profile not found"}, status = status.HTTP_404_NOT_FOUND)
-            
-    if request.method == "PUT":
-        if pk is not None:
-            try:
-                profile = Profile.objects.get(pk = pk)
-                serializer = ProfileSerializer(profile, data=request.data, partial = True) # partial set to true give the leverage to handle partial updates, PATCH method can be used as well for partial update
-                if serializer.is_valid():
-                    instance = serializer.save()
-                    response_serializer = ProfileSerializer(instance)
-                    data = response_serializer.data
-                    return Response(data, status = status.HTTP_200_OK)
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            except Profile.DoesNotExist:
-                return Response({"detail": "Profile not found"}, status=status.HTTP_404_NOT_FOUND)
-
-    return Response({"error": "Method not allowed"}, status = status.HTTP_405_METHOD_NOT_ALLOWED)
-
-
-@api_view(['GET', 'POST', 'PUT', 'DELETE'])
-def experience_bg_view(request, pk = None, professional_id = None, *args, **kwargs):
-
-    if request.method == "POST":
-        serializer = ExperienceBackgroundSerializer(data = request.data)
-        if serializer.is_valid():
-            instance = serializer.save()
-            response_serializer = ExperienceBackgroundSerializer(instance)
-            data = response_serializer.data
-            return Response(data, status = status.HTTP_201_CREATED)
+            self.perform_update(serializer)
+            return Response(serializer.data, status = status.HTTP_200_OK)
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
-    if request.method == "GET":
-        if pk is not None:
-            try:
-                experience_bg = ExperienceBackground.objects.get(pk = pk)
-                serializer = ExperienceBackgroundSerializer(experience_bg)
-                return Response(serializer.data)
-            except ExperienceBackground.DoesNotExist:
-                return Response({"detail": "Experience Background not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        if professional_id is not None:
-            try:
-                professional = Professional.objects.get(id = professional_id)
-                profile = Profile.objects.get(professional = professional)
-                queryset = profile.experience_backgrounds.all()
-                
-                serializer = ExperienceBackgroundSerializer(queryset, many = True)
-                data = serializer.data
-                return Response(data)
-            except Professional.DoesNotExist:
-                return Response({"detail": "Professional not found"}, status=status.HTTP_404_NOT_FOUND)
-            except Profile.DoesNotExist:
-                return Response({"detail": "Profile not found"}, status=status.HTTP_404_NOT_FOUND)
+# Experience Background view
+class ExperienceBackgroundCreateAPIView(generics.CreateAPIView):
+    queryset = ExperienceBackground.objects.all()
+    serializer_class = ExperienceBackgroundSerializer
 
-    if request.method == "PUT":
-        if pk is not None:
-            try:
-                experience_bg = ExperienceBackground.objects.get(pk = pk)
-                serializer = ExperienceBackgroundSerializer(experience_bg, data=request.data, partial = True) # partial set to true give the leverage to handle partial updates, PATCH method can be used as well for partial update
-                if serializer.is_valid():
-                    instance = serializer.save()
-                    response_serializer = ExperienceBackgroundSerializer(instance)
-                    data = response_serializer.data
-                    return Response(data, status = status.HTTP_200_OK)
-                return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
-            except ExperienceBackground.DoesNotExist:
-                return Response({"detail": "Experience Background not found"}, status = status.HTTP_404_NOT_FOUND)
+class ExperienceBackgroundDetailAPIView(generics.RetrieveAPIView):
+    queryset = ExperienceBackground.objects.all()
+    serializer_class = ExperienceBackgroundSerializer
+    lookup_field = "pk"
 
-    if request.method == "DELETE":
-        instance = get_object_or_404(ExperienceBackground, pk=pk)
-        instance.delete()
-        return Response(status = status.HTTP_204_NO_CONTENT)
+class ExperienceBackgroundListAPIView(generics.ListAPIView):
+    serializer_class = ExperienceBackgroundSerializer
 
-    return Response({"error": "Method not allowed"}, status = status.HTTP_405_METHOD_NOT_ALLOWED)
+    def get_queryset(self):
+        """ 
+        Assuming your ExperienceBackground model is related to the 
+        Profile model, and the Profile model is related to the Professional 
+        model, the relationship is likely established through ForeignKey fields.
+
+        To filter ExperienceBackground objects by a field in the Professional 
+        model, you need to traverse through the relationships. This is done 
+        using double underscores (__) to follow the ForeignKey relationships.
+
+        Why Not professional_id Directly?
+        There is no direct professional_id field in the ExperienceBackground 
+        model. The field professional_id doesn't exist in the ExperienceBackground 
+        model; instead, there is a profile field that is related to a Profile 
+        object, which in turn is related to a Professional object.
+
+        Therefore, to query ExperienceBackground objects based on a Professional's ID, 
+        you need to follow the chain of relationships using profile__professional__id.
+
+        This is a common technique in Django for handling complex queries 
+        involving related models.
+        """
+        professional_id = self.kwargs['professional_id']
+        return ExperienceBackground.objects.filter(profile__professional__id = professional_id)
+
+class ExperienceBackgroundUpdateAPIView(generics.UpdateAPIView):
+    queryset = ExperienceBackground.objects.all()
+    serializer_class = ExperienceBackgroundSerializer
+    lookup_field = "pk"
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop("partial", True)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data = request.data, partial = partial)
+        if serializer.is_valid():
+            self.perform_update(serializer)
+            return Response(serializer.data, status = status.HTTP_200_OK)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+
+class ExperienceBackgroundDestroyAPIView(generics.DestroyAPIView):
+    queryset = ExperienceBackground.objects.all()
+    serializer_class = ExperienceBackgroundSerializer
+    lookup_field = "pk"
