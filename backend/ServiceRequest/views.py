@@ -1,25 +1,32 @@
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework import generics
+from rest_framework import generics, authentication, permissions
 
 from .models import ServiceRequest
 from .serializers import ServiceRequestSerializer
+from Reviews.permissions import IsOwnerOrReadOnly
 
 
 # service request views
 class ServiceRequestListCreateAPIView(generics.ListCreateAPIView):
     queryset = ServiceRequest.objects.all()
     serializer_class = ServiceRequestSerializer
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
 
 class ServiceRequestDetailAPIView(generics.RetrieveAPIView):
     queryset = ServiceRequest.objects.all()
     serializer_class = ServiceRequestSerializer
     lookup_field = "pk"
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
 
 class ServiceRequestUpdateAPIView(generics.UpdateAPIView):
     queryset = ServiceRequest.objects.all()
     serializer_class = ServiceRequestSerializer
     lookup_field = "pk"
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop("partial", True)
@@ -34,3 +41,5 @@ class ServiceRequestDestroyAPIView(generics.DestroyAPIView):
     queryset = ServiceRequest.objects.all()
     serializer_class = ServiceRequestSerializer
     lookup_field = "pk"
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
