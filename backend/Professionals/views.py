@@ -1,28 +1,33 @@
 from Professionals.models import Professional 
-from django.shortcuts import get_object_or_404
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework import generics
+from rest_framework import generics, permissions, authentication
 
 from .models import Profile, ExperienceBackground
 from .serializers import ProfessionalSerializer, ProfileSerializer, ExperienceBackgroundSerializer
+from .permissions import IsProfessional
 
 
 # Professionals views
 class ProfessionalListCreateAPIView(generics.ListCreateAPIView):
     queryset = Professional.objects.all()
-    serializer_class = ProfessionalSerializer
+    serializer_class = ProfessionalSerializer 
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 class ProfessionalDetailAPIView(generics.RetrieveAPIView):
     queryset = Professional.objects.all()
     serializer_class = ProfessionalSerializer
     lookup_field = "pk"
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 class ProfessionalUpdateAPIView(generics.UpdateAPIView):
     queryset = Professional.objects.all()
     serializer_class = ProfessionalSerializer
     lookup_field = "pk"
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated, IsProfessional]
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop("partial", True) # Ensure partial updates are allowed
@@ -37,22 +42,30 @@ class ProfessionalDestroyAPIView(generics.DestroyAPIView):
     queryset = Professional.objects.all()
     serializer_class = ProfessionalSerializer
     lookup_field = "pk"
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAdminUser, IsProfessional]
 
 
 # Profile views
 class ProfileCreateAPIView(generics.CreateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated, IsProfessional]
 
 class ProfileDetailAPIView(generics.RetrieveAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     lookup_field = "pk"
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
 
 class ProfileUpdateAPIView(generics.UpdateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     lookup_field = "pk"
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated, IsProfessional]
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop("partial", True)
@@ -68,14 +81,20 @@ class ProfileUpdateAPIView(generics.UpdateAPIView):
 class ExperienceBackgroundCreateAPIView(generics.CreateAPIView):
     queryset = ExperienceBackground.objects.all()
     serializer_class = ExperienceBackgroundSerializer
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated, IsProfessional]
 
 class ExperienceBackgroundDetailAPIView(generics.RetrieveAPIView):
     queryset = ExperienceBackground.objects.all()
     serializer_class = ExperienceBackgroundSerializer
     lookup_field = "pk"
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
 
 class ExperienceBackgroundListAPIView(generics.ListAPIView):
     serializer_class = ExperienceBackgroundSerializer
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         """ 
@@ -106,6 +125,8 @@ class ExperienceBackgroundUpdateAPIView(generics.UpdateAPIView):
     queryset = ExperienceBackground.objects.all()
     serializer_class = ExperienceBackgroundSerializer
     lookup_field = "pk"
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated, IsProfessional]
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop("partial", True)
@@ -120,3 +141,6 @@ class ExperienceBackgroundDestroyAPIView(generics.DestroyAPIView):
     queryset = ExperienceBackground.objects.all()
     serializer_class = ExperienceBackgroundSerializer
     lookup_field = "pk"
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAdminUser, IsProfessional]
+
