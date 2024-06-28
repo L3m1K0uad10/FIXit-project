@@ -1,23 +1,30 @@
-from rest_framework import generics
+from rest_framework import generics, authentication, permissions
 from rest_framework.response import Response
 from rest_framework import status
 
 from .models import Review
 from .serializers import ReviewSerializer
+from .permissions import IsOwnerOrReadOnly
 
 
 # Review views
 class ReviewListeCreateAPIView(generics.ListCreateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
 
 class ReviewDetailAPIView(generics.RetrieveAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     lookup_field = "pk"
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
 
 class ReviewListAPIView(generics.ListAPIView):
     serializer_class = ReviewSerializer
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         professional_id = self.kwargs["professional_id"]
@@ -27,6 +34,8 @@ class ReviewUpdateAPIView(generics.UpdateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     lookup_field = "pk"
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop("partial", True)
@@ -41,3 +50,5 @@ class ReviewDestroyAPIView(generics.DestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     lookup_field = "pk"
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
