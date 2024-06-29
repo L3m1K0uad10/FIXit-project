@@ -1,62 +1,54 @@
-from django.shortcuts import get_object_or_404
-from rest_framework.decorators import api_view
+from rest_framework import generics, authentication, permissions
 from rest_framework.response import Response
-from rest_framework import status
 
 from .models import Message
 from .serializers import MessageSerializer
+from .permissions import IsSenderOrReceiver, IsSender, IsReceiver
 
 
-@api_view(['GET', 'POST', 'PUT', 'DELETE'])
-def message_view(request, pk = None, receiver_id = None, sender_id = None, *args, **kwargs):
+# Message views
+class MessageListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Message.objects.all()
+    serializer_class = MessageSerializer
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+class MessageDetailAPIView(generics.RetrieveAPIView):
+    queryset = Message.objects.all()
+    serializer_class = MessageSerializer
+    lookup_field = "pk"
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated, IsSenderOrReceiver]
+
+class MessageListAPIView(generics.ListAPIView):
+    serializer_class = MessageSerializer
+
+    def get_queryset(self):
+        if "sender_id" in self.kwargs:
+            sender_id = self.kwargs["sender_id"]
+            return Message.objects.filter(sender_id = sender_id)
+        if "receiver_id" in self.kwargs:
+            receiver_id = self.kwargs["receiver_id"]
+            return Message.objects.filter(receiver_id = receiver_id)
+        
+    def get_permissions(self):
+        if "sender_id" in self.kwargs:
+            permission_classes = [permissions.IsAuthenticated, IsSender]
+        elif "receiver_id" in self.kwargs:
+            permission_classes = [permissions.IsAuthenticated, IsReceiver]
+        return [permission() for permission in permission_classes]
     
-    if request.method == "POST":
-        serializer = MessageSerializer(data = request.data)
-        if serializer.is_valid():
-            instance = serializer.save()
-            serializer_response = MessageSerializer(instance)
-            data = serializer_response.data
-            return Response(data, status = status.HTTP_201_CREATED)
-        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        for obj in queryset:
+            self.check_object_permissions(request, obj)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+        
+class MessageDestroyAPIView(generics.DestroyAPIView):
+    queryset = Message.objects.all()
+    serializer_class = MessageSerializer
+    lookup_field = "pk"
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated, IsSender]
 
-    if request.method == "GET":
-        if pk is not None:
-            try:
-                message = Message.objects.get(id = pk) 
-                serializer = MessageSerializer(message)
-                return Response(serializer.data)
-            except Message.DoesNotExist:
-                return Response({"error": "Review not found"}, status = status.HTTP_400_BAD_REQUEST)
-
-        if sender_id is not None:
-            try:
-                queryset = Message.objects.filter(sender_id = sender_id)
-                serializer = MessageSerializer(queryset, many = True)
-                data = serializer.data
-                return Response(data)
-            except Message.DoesNotExist:
-                return Response({"error": "Review not found"}, status = status.HTTP_400_BAD_REQUEST)
-
-        if receiver_id is not None:
-            try:
-                queryset = Message.objects.filter(receiver_id = receiver_id)
-                serializer = MessageSerializer(queryset, many = True)
-                data = serializer.data
-                return Response(data)
-            except Message.DoesNotExist:
-                return Response({"error": "Review not found"}, status = status.HTTP_400_BAD_REQUEST)
-
-        queryset = Message.objects.all()
-        serializer = MessageSerializer(queryset, many = True)
-        data = serializer.data
-        return Response(data)
-            
-    if request.method == "DELETE":
-        try:
-            instance = get_object_or_404(Message, id = pk)
-            instance.delete()
-            return Response(status = status.HTTP_204_NO_CONTENT)
-        except Exception as e:
-                return Response({"error": str(e)}, status = status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    return Response({"error": "Method not allowed"}, status = status.HTTP_405_METHOD_NOT_ALLOWED)

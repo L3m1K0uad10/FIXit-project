@@ -1,13 +1,13 @@
 from django.urls import path
 
-from .views import service_request_view
+from . import views
 
 
 
 urlpatterns = [
-    path("create/", service_request_view, name = "service_request_create"),
-    path("", service_request_view, name = "service_request_list"),
-    path("<int:pk>/", service_request_view, name = "service_request_detail"),
-    path("update/<int:pk>/", service_request_view, name = "service_request_update"),
-    path("delete/<int:pk>/", service_request_view, name = "service_request_delete"),
+    path("create/", views.ServiceRequestListCreateAPIView.as_view(), name = "service_request_create"),
+    path("", views.ServiceRequestListCreateAPIView.as_view(), name = "service_request_list"),
+    path("<int:pk>/", views.ServiceRequestDetailAPIView.as_view(), name = "service_request_detail"),
+    path("update/<int:pk>/", views.ServiceRequestUpdateAPIView.as_view(), name = "service_request_update"),
+    path("delete/<int:pk>/", views.ServiceRequestDestroyAPIView.as_view(), name = "service_request_delete"),
 ]
