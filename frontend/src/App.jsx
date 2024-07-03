@@ -7,6 +7,7 @@ import ProfilesPage from "./pages/profilesPage/ProfilesPage";
 import BenefitsPage from "./pages/benefitsPage/BenefitsPage";
 import HIWPage from "./pages/hiwPage/HIWPage";
 import DomainServiceDetailPage from "./pages/domainServiceDetailPage/DomainServiceDetailPage";
+import FindProfessionalPage from "./pages/findProfessionalPage/FindProfessionalPage";
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path = "/benefits" element = {<BenefitsPage />}></Route>
           <Route path = "/how-it-works" element = {<HIWPage />}></Route>
           <Route path = "/domain/service-details" element = {<DomainServiceDetailPage/>}></Route>
+          <Route path = "/find-pro" element = {<FindProfessionalPage/>}></Route>
         </Routes>
       </BrowserRouter>
     </>
