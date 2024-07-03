@@ -14,8 +14,8 @@ function getFirstDigit(number) {
 export default function Position(props) {
 
     const style = {
-        width: "40px",
-        height: "40px",
+        width: `${Math.round(props.distance / 2)}px`,
+        height: `${Math.round(props.distance / 2)}px`,
         borderRadius: "50%",
         backgroundColor: props.connectivity == "offline" ? "#F41313" : "#26F56D",
         borderColor: props.connectivity == "offline" ? "#F41313" : "#26F56D",
@@ -23,7 +23,7 @@ export default function Position(props) {
 
     const thumbtackStyle = {
         gridColumn: getFirstDigit(props.distance),
-        gridRow: props.position
+        gridRow: props.position + 1,
     }
 
     console.log(getFirstDigit(props.distance), props.position)
