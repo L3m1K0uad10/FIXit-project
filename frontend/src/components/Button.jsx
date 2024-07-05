@@ -14,21 +14,21 @@ const ButtonComponent = styled.button`
     font-family: "Inter", sans-serif;
     font-weight: 500;
     border: 2px solid ${props => 
-        props.page === "profile-page"
+        props.page === "profile-page" || "find-pro"
             ? "#E5E5E5"
             : props.variant === "yale-blue" 
                 ? "#023d7bff" 
                 : "#1f78b4ff"           
     };
     background-color: ${props => 
-        props.page === "profile-page"
+        props.page === "profile-page" || "find-pro"
             ? "white"
             : props.variant === "yale-blue" 
                 ? "#023d7bff" 
                 : "#1f78b4ff"           
     };
     color: ${props => 
-        props.page === "profile-page"
+        props.page === "profile-page" || "find-pro"
             ? "black"
             : "white"          
     };
@@ -46,8 +46,6 @@ const ButtonComponent = styled.button`
 
 
 const Button = ({type, variant, id, page, onClick, children}) => {
-
-    console.log(page)
 
     return(
         <ButtonComponent 

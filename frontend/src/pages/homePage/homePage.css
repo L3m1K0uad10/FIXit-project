@@ -1,10 +1,10 @@
-@import '../../colors.css';
+@import "../../colors.css";
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Poppins', 'sans-serif';
+  font-family: "Poppins", "sans-serif";
 }
 
 html {
@@ -88,7 +88,8 @@ body {
   padding-bottom: 10px;
 }
 
-.home-hero input, select {
+.home-hero input,
+select {
   padding: 10px;
   margin-right: 10px;
 }
@@ -143,7 +144,6 @@ body {
   animation: nonstop-rotation 2s linear infinite;
 }
 
-
 .home-page-container main {
   display: flex;
   flex-direction: column;
@@ -155,14 +155,14 @@ body {
   padding-right: 30px;
 }
 
-.category-section h1, .category-section p{
+.category-section h1,
+.category-section p {
   padding-left: 30px;
 }
 
 .category-section p {
   padding-bottom: 30px;
 }
-
 
 .first-horizontal-div {
   width: 100%;
@@ -188,7 +188,8 @@ body {
   padding: 30px;
 }
 
-.reusable-btn-section h1, .reusable-btn-section p{
+.reusable-btn-section h1,
+.reusable-btn-section p {
   padding-left: 30px;
 }
 
@@ -203,7 +204,7 @@ body {
   background-color: var(--yale-blue);
 }
 
-.how-it-works-section, 
+.how-it-works-section,
 .get-started-section,
 .reasons-section {
   margin: 30px 60px 60px 60px;
@@ -244,7 +245,6 @@ body {
   background-color: white;
   color: var(--yale-blue);
 }
-
 
 .fourth-horizontal-div {
   width: 100%;
@@ -306,7 +306,6 @@ body {
   text-decoration: none;
   padding: 10px;
 }
-
 
 @keyframes nonstop-rotation {
   from {

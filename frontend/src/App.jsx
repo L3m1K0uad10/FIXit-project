@@ -7,6 +7,8 @@ import ProfilesPage from "./pages/profilesPage/ProfilesPage";
 import BenefitsPage from "./pages/benefitsPage/BenefitsPage";
 import HIWPage from "./pages/hiwPage/HIWPage";
 import DomainServiceDetailPage from "./pages/domainServiceDetailPage/DomainServiceDetailPage";
+import FindProfessionalPage from "./pages/findProfessionalPage/FindProfessionalPage";
+import ProfessionalProfilePage from "./pages/professionalProfilePage/ProfessionalProfilePage";
 
 function App() {
   return (
@@ -25,6 +27,11 @@ function App() {
           <Route
             path="/domain/service-details"
             element={<DomainServiceDetailPage />}
+          ></Route>
+          <Route path="/find-pro" element={<FindProfessionalPage />}></Route>
+          <Route
+            path="/pro-profile"
+            element={<ProfessionalProfilePage />}
           ></Route>
         </Routes>
       </BrowserRouter>

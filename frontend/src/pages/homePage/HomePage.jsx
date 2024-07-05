@@ -48,7 +48,7 @@ function HomePage() {
         <nav className="home-nav">
           <img src={Logo} alt="" className="nav--logo" />
           <ul className="nav-ul-list">
-            <Link to = "/how-it-works">
+            <Link to="/how-it-works">
               <a href="">how it works</a>
             </Link>
             <li>
@@ -158,7 +158,7 @@ function HomePage() {
                   <p>Have a great day!</p>
                 </div>
               </ol>
-              <Link to = "/how-it-works">
+              <Link to="/how-it-works">
                 <button>LEARN MORE</button>
               </Link>
             </div>
