@@ -25,7 +25,7 @@ export default function FindProfessionalPage() {
         marginLeft: "30px",
         marginRight: "30px",
     };
-    
+
     const reusableButtonElements = serviceData.map((service) => (
         <Button
             key={service.id}
@@ -122,15 +122,15 @@ export default function FindProfessionalPage() {
             </main>
 
             <footer className = "footer">
-				<div className = "footer-link-item-container">
-					<a href = "">About Us</a>
-					<a href = "">Terms Of Services</a>
-					<a href = "">Privacy Policy</a>
-					<a href = "">Help & Support</a>
-				</div>
-					<h3>&copy; FIXit, ALL RIGHTS RESERVED</h3>
-				<hr />
-			</footer>
+      				<div className = "footer-link-item-container">
+      					<a href = "">About Us</a>
+      					<a href = "">Terms Of Services</a>
+      					<a href = "">Privacy Policy</a>
+      					<a href = "">Help & Support</a>
+      				</div>
+      					<h3>&copy; FIXit, ALL RIGHTS RESERVED</h3>
+      				<hr />
+      			</footer>
         </div>
     )
 }

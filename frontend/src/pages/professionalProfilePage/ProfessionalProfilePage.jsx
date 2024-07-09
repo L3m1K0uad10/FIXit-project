@@ -11,178 +11,151 @@ import Plumbing from "../../assets/plumbing.png";
 
 function ProfessionalProfilePage() {
   return (
-    <>
-      <div className="professions-page-container">
-        <nav className="professions-nav">
-          <div className="nav-image-container">
-            <div>
-              <img src={Logo} alt="" className="nav-logo" />
-            </div>
-          </div>
-          <div className="nav-list-container">
-            <ul className="nav-ul-list">
-              <a href="">how it works</a>
-
-              <li>
-                <a href="">Professional profiles</a>
-              </li>
-              <li>
-                <button className="service-proposer-btn">
-                  SWITCH TO PROFESSIONAL
-                </button>
-              </li>
-              <li>
-                <button className="Log-out-btn">LOG OUT</button>
-              </li>
-              <img src={Profile} className="user-profile" />
-            </ul>
-          </div>
-        </nav>
+      <div className="professional-profile-page-container">
+        <header>
+            <nav className = "home-nav">
+                <img src = {Logo} alt = "" className = "nav--logo" />
+                <ul className = "nav-ul-list">
+                    <li>
+                    <a href = "">how it works</a>
+                    </li>
+                    <li>
+                    <a href = "">Professional profiles</a>
+                    </li>
+                    <li>
+                    <button className = "service-proposer-btn">
+                        SWITCH TO PROFESSIONAL
+                    </button>
+                    </li>
+                    <li>
+                    <button className = "Log-out-btn">LOG OUT</button>
+                    </li>
+                    <img src = {Profile} className = "user-profile" />
+                </ul>
+            </nav>
+        </header>
         <main className="main-container">
-          <div className="professionals">
-            <div className="professional-welcoming">
-              <h3>
-                I will help you out with everything <br />
-                plumbing
-              </h3>
-            </div>
-            <div className="professional-user-messages">
-              <div className="professional-container">
-                <div className="professional-details">
-                  <div>
-                    <img src={Profile} alt="professional image" />
-                  </div>
+            <h1>
+              I will help you out with everything <br />
+              plumbing
+            </h1>
+            <div className="main-inner-container">
+              <div className="professional-details-container">
+                <section className="professional-details-inner-container">
+                  <img src={Profile} alt="professional image" />
                   <div className="professional-info">
                     <h5>Yvan Kwame</h5>
                     <p>20 Repairs</p>
-                    <p>
+                    <div className = "professional-info-rating">
                       <FontAwesomeIcon icon={faStar} />
-                      4.8
-                    </p>
+                      <p>4.8</p>
+                    </div>
                   </div>
-                </div>
-                <div className="professional-experience-text">
-                  Experienced and certified plumber with <br />
-                  over 15 years in the plumbing industry,
-                  <br />
-                  v specializing in residential and commercial
-                  <br />
-                  plumbing systems. Adept at installing, <br />
-                  repairing, and maintaining a wide variety of
-                  <br />
-                  plumbing fixtures and systems. Recognized for <br />
-                  excellent problem-solving skills and a commitment <br />
-                  to customer satisfaction.
-                </div>
-                <div className="professional-suggestion-container">
-                  <p className="first-suggestion">
+                </section>
+
+                <p className="about-professional">
+                  Experienced and certified plumber with over 15 years in the plumbing industry,
+                  specializing in residential and commercial plumbing systems. Adept at installing,
+                  repairing, and maintaining a wide variety of plumbing fixtures and systems. Recognized for
+                  excellent problem-solving skills and a commitment to customer satisfaction.
+                </p>
+
+                <section className="professional-expertise-container">
+                  <p className="expertise">
                     Installing and repairing faucets, sinks, showers, and
                     bathtubs
                   </p>
-                  <p className="second-suggestion">
+                  <p className="expertise">
                     Replacing outdated or damaged fixtures
                   </p>
-                  <p className="third-suggestion">
+                  <p className="expertise">
                     Upgrading to water-saving fixtures
                   </p>
-                  <p className="fourth-suggestion">
+                  <p className="expertise">
                     Installing new plumbing fixtures
                   </p>
-                  <p className="fifth-suggestion">
+                  <p className="expertise">
                     Sewer line repair and replacement
                   </p>
-                </div>
-                <div className="professional-rating">
-                  <div className="professional-rating-header">
+                </section>
+
+                <section className="review-section">
+                  <div className = "review-section-header">
                     <h3>What people loved about this professional</h3>
-                    <p>See all reviews</p>
+                    <a href = "">See all reviews</a>
                   </div>
-                  <div className="professional-rating-texts">
-                    <div className="professional-title">
-                      <h3>June Olade</h3>
-                      <FontAwesomeIcon icon={faStar} />
-                      <FontAwesomeIcon icon={faStar} />
-                      <FontAwesomeIcon icon={faStar} />
-                      <FontAwesomeIcon icon={faStar} />
-                      <FontAwesomeIcon icon={faStar} />
-                      <h3>5</h3>
+                  <div className="review-card">
+                    <div className="review-card-rating">
+                      <div className = "review-card-profile">J</div>
+                      <h5>June Olade</h5>
+                      <div className = "vertical-separator"></div>
+                      <div className = "rating">
+                        <FontAwesomeIcon icon={faStar} />
+                        <FontAwesomeIcon icon={faStar} />
+                        <FontAwesomeIcon icon={faStar} />
+                        <FontAwesomeIcon icon={faStar} />
+                        <FontAwesomeIcon icon={faStar} />
+                        <h3>5</h3>
+                      </div>
                     </div>
-                    <div>
-                      I recently had the pleasure of working <br />
-                      with John Mitchell from ABC Plumbing <br />
-                      Services to repair my kitchen sink, and I <br />
-                      couldn't be more satisfied with <br />
+                    <p>
+                      I recently had the pleasure of working
+                      with John Mitchell from ABC Plumbing
+                      Services to repair my kitchen sink, and I
+                      couldn't be more satisfied with
                       the experience. From start to finish, Jo...
-                    </div>
+                    </p>
                   </div>
-                </div>
+                </section>
+
+                <section className = "portfolio-section">
+                    <h3>Portfolio</h3>
+                    <div className = "portfolio-images-container">
+                        <img src={Plumbing} alt="professional image" />
+                        <img src={Mechanic} alt="professional image" />
+                        <img src={Paint} alt="professional image" />
+                    </div>
+                </section>
               </div>
-              <div className="messages-container">
-                <div className="message-chat-box">
-                  <h2>Messaging</h2>
-                </div>
-                <div className="customer-messages">
-                  <div>
-                    <div className="user-message">
-                      <p>At which time the would like the fix?</p>
-                    </div>
-                    <div className="professional-text">
-                      <p>
-                        As i told you my sink right now need to be <br />
-                        fix and in the bathroom there are some job to be done.
-                      </p>
-                    </div>
-                    <div className="user-message">
-                      <p>
-                        Alright sorry for any inconvenience of misunderstanding
-                      </p>
-                    </div>
-                    <div className="user-message">
-                      <p>Can i have some picture ?</p>
-                    </div>
+
+              <div className = "messages-container">
+                <h3>Messaging</h3>
+                <div className = "message-display-container">
+                  <div className = "message-display-inner-container">
+                    <p className = "pro-message">At which time the would like the fix?</p>
+                    <p className = "user-message">
+                      As i told you my sink right now need to be <br />
+                      fix and in the bathroom there are some job to be done.
+                    </p>
+                    <p className = "pro-message">
+                      Alright sorry for any inconvenience of misunderstanding
+                    </p>
+                    <p className = "pro-message">Can i have some picture ?</p>
+                    <p className = "user-message">please, give me one second</p>
                   </div>
-                  <div className="user-text">
-                    <p>how much do you think it's gonna cost me?</p>
-                  </div>
-                </div>
-                <div className="message-submit-btn">
-                  <button>SEND</button>
+                  <form>
+                    <textarea />
+                    <div>
+                      <button type = "submit">SEND</button>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
-          </div>
+
         </main>
-        <section>
-          <div className="portfolio-page-container">
-            <div>
-              <h1>Portfolio</h1>
-            </div>
-            <div className="portfolio-images">
-              <div>
-                <img src={Plumbing} alt="professional image" />
-              </div>
-              <div>
-                <img src={Mechanic} alt="professional image" />
-              </div>
-              <div>
-                <img src={Paint} alt="professional image" />
-              </div>
-            </div>
+
+        <footer className = "footer">
+          <div className = "footer-link-item-container">
+            <a href = "">About Us</a>
+            <a href = "">Terms Of Services</a>
+            <a href = "">Privacy Policy</a>
+            <a href = "">Help & Support</a>
           </div>
-        </section>
-        <div className="sixth-horizontal-div"></div>
-        <footer className="footer">
-          <div className="footer-link-item-container">
-            <a href="">About Us</a>
-            <a href="">Terms Of Services</a>
-            <a href="">Privacy Policy</a>
-            <a href="">Help & Support</a>
-          </div>
-          <p>&copy; FIXit, ALL RIGHTS RESERVED</p>
+            <h3>&copy; FIXit, ALL RIGHTS RESERVED</h3>
           <hr />
         </footer>
       </div>
-    </>
   );
 }
 export default ProfessionalProfilePage;
