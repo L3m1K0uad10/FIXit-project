@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import LandingPage from "./pages/landingPage/LandingPage";
-import AuthPage from "./pages/authPage/AuthPage";
+import AuthPage from "./pages/authPage/authPage";
 import HomePage from "./pages/homePage/HomePage";
 import ProfilesPage from "./pages/profilesPage/ProfilesPage";
 import BenefitsPage from "./pages/benefitsPage/BenefitsPage";
@@ -9,6 +9,7 @@ import HIWPage from "./pages/hiwPage/HIWPage";
 import DomainServiceDetailPage from "./pages/domainServiceDetailPage/DomainServiceDetailPage";
 import FindProfessionalPage from "./pages/findProfessionalPage/FindProfessionalPage";
 import ProfessionalProfilePage from "./pages/professionalProfilePage/ProfessionalProfilePage";
+import AboutUsPage from "./pages/aboutUsPage.jsx/AboutUsPage";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             path="/pro-profile"
             element={<ProfessionalProfilePage />}
           ></Route>
+          <Route path="/about-us" element={<AboutUsPage />}></Route>
         </Routes>
       </BrowserRouter>
     </>

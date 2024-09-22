@@ -1,0 +1,189 @@
+@import "../../colors.css";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", "sans-serif";
+}
+
+html {
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  height: 100vh;
+}
+
+.home-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(246, 247, 249);
+  border: 5px solid var(--berkeley-blue);
+  padding: 10px 30px;
+}
+
+.nav--logo {
+  width: 80px;
+}
+
+.nav-ul-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  list-style: none;
+  text-decoration: none;
+}
+
+.nav-ul-list > a {
+  text-decoration-line: none;
+  list-style: none;
+}
+
+.user-profile {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+}
+
+.Log-out-btn {
+  padding: 10px 30px;
+  background-color: var(--yale-blue);
+  color: white;
+  border: 2px solid var(--yale-blue);
+  cursor: pointer;
+}
+
+.Log-out-btn:hover {
+  background-color: white;
+  color: var(--yale-blue);
+  border-color: var(--yale-blue);
+}
+
+.service-proposer-btn {
+  padding: 10px 30px;
+  background-color: var(--honolulu-blue);
+  color: white;
+  border: 2px solid var(--honolulu-blue);
+  cursor: pointer;
+}
+
+.service-proposer-btn:hover {
+  background-color: white;
+  color: var(--honolulu-blue);
+  border-color: var(--honolulu-blue);
+}
+
+.about-us-logo {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 50px;
+}
+
+.about-us-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.about-us-mid-logo {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  margin: 30px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 50%;
+  gap: 10px;
+  padding: 20px;
+  border: 2px solid var(--berkeley-blue);
+  border-radius: 10px;
+  background-color: rgb(246, 247, 249);
+}
+
+.card > img {
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
+}
+
+.card > h2 {
+  color: var(--berkeley-blue);
+}
+
+.card > p {
+  color: var(--berkeley-blue);
+}
+
+.card > a {
+  padding: 10px 30px;
+  background-color: var(--honolulu-blue);
+  color: white;
+  border: 2px solid var(--honolulu-blue);
+  cursor: pointer;
+}
+
+.card > a:hover {
+  background-color: white;
+  color: var(--honolulu-blue);
+  border-color: var(--honolulu-blue);
+}
+
+.card > a:active {
+  background-color: var(--honolulu-blue);
+  color: white;
+  border-color: var(--honolulu-blue);
+}
+
+.card > a:visited {
+  background-color: var(--honolulu-blue);
+  color: white;
+  border-color: var(--honolulu-blue);
+}
+
+.card > a:link {
+  background-color: var(--honolulu-blue);
+  color: white;
+  border-color: var(--honolulu-blue);
+}
+
+.card > a:focus {
+  background-color: var(--honolulu-blue);
+  color: white;
+  border-color: var(--honolulu-blue);
+}
+
+.sixth-horizontal-div {
+  width: 100%;
+  height: 8px;
+  border: none;
+  background-color: rgb(11, 84, 180);
+}
