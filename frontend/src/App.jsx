@@ -10,6 +10,7 @@ import DomainServiceDetailPage from "./pages/domainServiceDetailPage/DomainServi
 import FindProfessionalPage from "./pages/findProfessionalPage/FindProfessionalPage";
 import ProfessionalProfilePage from "./pages/professionalProfilePage/ProfessionalProfilePage";
 import AboutUsPage from "./pages/aboutUsPage.jsx/AboutUsPage";
+import RegistrationForm from "./pages/registrationForm/RegistrationForm";
 
 function App() {
   return (
@@ -35,6 +36,10 @@ function App() {
             element={<ProfessionalProfilePage />}
           ></Route>
           <Route path="/about-us" element={<AboutUsPage />}></Route>
+          <Route
+            path="/registration-form"
+            element={<RegistrationForm />}
+          ></Route>
         </Routes>
       </BrowserRouter>
     </>
