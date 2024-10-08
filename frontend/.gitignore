@@ -25,3 +25,7 @@ dist-ssr
 
 
 .eslintrc.cjs
+
+myenv/
+env/
+venv/
